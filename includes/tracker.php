@@ -130,3 +130,25 @@ if (!function_exists('kh_matomo_track_redirect')) {
         }
     }
 }
+
+/**
+ * Adapt YOURLS 1.10.6 action arguments to the redirect tracker.
+ *
+ * YOURLS packs the arguments passed to yourls_do_action() into one array when
+ * dispatching actions. The redirect_shorturl callback therefore receives
+ * [$destination, $keyword] as its first argument, not two separate arguments.
+ *
+ * @param mixed $args Arguments packed by YOURLS.
+ *
+ * @return bool Whether Matomo returned a successful HTTP status.
+ */
+if (!function_exists('kh_matomo_handle_redirect_action')) {
+    function kh_matomo_handle_redirect_action($args)
+    {
+        if (!is_array($args) || !isset($args[0], $args[1])) {
+            return false;
+        }
+
+        return kh_matomo_track_redirect($args[0], $args[1]);
+    }
+}
