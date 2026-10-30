@@ -2,7 +2,7 @@
 
 **Contract version:** 1.0  
 **Status:** Approved for UAT validation  
-**Plugin version:** 0.1.0
+**Plugin version:** 0.1.1-alpha
 
 This document defines the plugin's required behavior, compatibility targets,
 privacy rules, and UAT acceptance criteria. The user-facing setup guide is in
@@ -50,6 +50,12 @@ The plugin consists of:
 - `includes/settings.php`: configuration defaults, normalization, and storage.
 - `includes/tracker.php`: redirect event construction and privacy handling.
 - `includes/matomo-api.php`: Matomo Reporting API and Tracking API transport.
+- `includes/i18n.php`: YOURLS gettext domain and locale catalog loading.
+
+User-facing plugin strings use YOURLS' native gettext functions with the
+`kh-matomo` domain. Locale catalogs use
+`languages/kh-matomo-<locale>.mo`; the translation template is
+`languages/kh-matomo.pot`.
 
 Settings are stored in the YOURLS option `kh_matomo_settings`. The option is a
 single configuration array; the plugin creates no additional database tables.

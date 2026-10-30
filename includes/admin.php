@@ -26,7 +26,7 @@ if (!function_exists('kh_matomo_register_admin_page')) {
     {
         yourls_register_plugin_page(
             'kh-matomo',
-            'Matomo Tracker',
+            kh_matomo_t('Matomo Tracker'),
             'kh_matomo_render_admin_page'
         );
 
@@ -97,7 +97,7 @@ if (!function_exists('kh_matomo_validate_connection_input')) {
         if (!kh_matomo_is_valid_url($url)) {
             return [
                 'success' => false,
-                'message' => 'Introduce la URL base HTTPS de Matomo, sin /matomo.php ni /index.php. Ejemplo: https://analytics.example.com',
+                'message' => kh_matomo_t('Introduce la URL base HTTPS de Matomo, sin /matomo.php ni /index.php.'),
             ];
         }
 
@@ -108,7 +108,7 @@ if (!function_exists('kh_matomo_validate_connection_input')) {
         ) {
             return [
                 'success' => false,
-                'message' => 'El Site ID debe ser un número entero positivo.',
+                'message' => kh_matomo_t('El Site ID debe ser un número entero positivo.'),
             ];
         }
 
@@ -120,7 +120,7 @@ if (!function_exists('kh_matomo_validate_connection_input')) {
         if ($token === '') {
             return [
                 'success' => false,
-                'message' => 'Introduce el token de autenticación de Matomo.',
+                'message' => kh_matomo_t('Introduce el token de autenticación de Matomo.'),
             ];
         }
 
@@ -148,7 +148,7 @@ if (!function_exists('kh_matomo_ajax_test_connection')) {
         try {
             $step = 'auth';
             if (yourls_is_valid_user() !== true) {
-                throw new RuntimeException('No tienes autorización.');
+                throw new RuntimeException(kh_matomo_t('No tienes autorización.'));
             }
 
             $step = 'nonce';
@@ -158,7 +158,7 @@ if (!function_exists('kh_matomo_ajax_test_connection')) {
             $expected_nonce = yourls_create_nonce('kh_matomo_test_connection');
 
             if (!hash_equals($expected_nonce, $nonce)) {
-                throw new RuntimeException('La sesión expiró. Recarga la página e inténtalo de nuevo.');
+                throw new RuntimeException(kh_matomo_t('La sesión expiró. Recarga la página e inténtalo de nuevo.'));
             }
 
             $step = 'validation';
@@ -178,7 +178,7 @@ if (!function_exists('kh_matomo_ajax_test_connection')) {
             if (empty($validation['success'])) {
                 $result = [
                     'success' => false,
-                    'message' => $validation['message'] ?? 'Error de validación.',
+                    'message' => $validation['message'] ?? kh_matomo_t('Error de validación.'),
                 ];
             } else {
                 $step = 'matomo';
@@ -196,13 +196,13 @@ if (!function_exists('kh_matomo_ajax_test_connection')) {
             $step = 'exception';
             $result = [
                 'success' => false,
-                'message' => 'No se pudo completar la prueba de conexión.',
+                'message' => kh_matomo_t('No se pudo completar la prueba de conexión.'),
             ];
         }
 
         echo json_encode([
             'success' => (bool) ($result['success'] ?? false),
-            'message' => (string) ($result['message'] ?? 'Resultado inesperado.'),
+            'message' => (string) ($result['message'] ?? kh_matomo_t('Resultado inesperado.')),
             'step' => $step,
         ]);
 
@@ -218,17 +218,16 @@ if (!function_exists('kh_matomo_render_connection_section')) {
     function kh_matomo_render_connection_section($settings)
     {
 ?>
-        <h3>Conexión con Matomo</h3>
+        <h3><?php echo kh_matomo_escape(kh_matomo_t('Conexión con Matomo')); ?></h3>
 
         <p>
-            Configura la instancia de Matomo que recibirá
-            los eventos de seguimiento de YOURLS.
+            <?php echo kh_matomo_escape(kh_matomo_t('Configura la instancia de Matomo que recibirá los eventos de seguimiento de YOURLS.')); ?>
         </p>
 
         <table class="form-table">
             <tr>
                 <th scope="row">
-                    <label for="kh-matomo-url">URL base de Matomo</label>
+                    <label for="kh-matomo-url"><?php echo kh_matomo_escape(kh_matomo_t('URL base de Matomo')); ?></label>
                 </th>
                 <td>
                     <input
@@ -241,16 +240,14 @@ if (!function_exists('kh_matomo_render_connection_section')) {
                         aria-describedby="kh-matomo-url-help"
                         required>
                     <p class="description" id="kh-matomo-url-help">
-                        Escribe el dominio o la carpeta donde está instalado Matomo,
-                        sin añadir <code>/matomo.php</code> ni <code>/index.php</code>.
-                        Ejemplo: <code>https://analytics.example.com</code>.
+                        <?php echo kh_matomo_escape(kh_matomo_t('Escribe el dominio o la carpeta donde está instalado Matomo, sin añadir /matomo.php ni /index.php.')); ?>
                     </p>
                 </td>
             </tr>
 
             <tr>
                 <th scope="row">
-                    <label for="kh-matomo-site-id">Site ID</label>
+                    <label for="kh-matomo-site-id"><?php echo kh_matomo_escape(kh_matomo_t('Site ID')); ?></label>
                 </th>
                 <td>
                     <input
@@ -266,24 +263,19 @@ if (!function_exists('kh_matomo_render_connection_section')) {
 
             <tr>
                 <th scope="row">
-                    <label for="kh-matomo-token">Authentication token</label>
+                    <label for="kh-matomo-token"><?php echo kh_matomo_escape(kh_matomo_t('Token de autenticación')); ?></label>
                 </th>
                 <td>
                     <?php if ($settings['auth_token'] !== '') : ?>
                         <p>
                             <code>••••••••••••••••</code>
                             <span class="description">
-                                Token configurado. Introduce uno nuevo
-                                únicamente si deseas reemplazarlo.
-                                El usuario del token necesita permiso de
-                                escritura en el sitio de Matomo.
+                                <?php echo kh_matomo_escape(kh_matomo_t('Token configurado. Introduce uno nuevo únicamente si deseas reemplazarlo. El usuario del token necesita permiso de escritura en el sitio de Matomo.')); ?>
                             </span>
                         </p>
                     <?php else : ?>
                         <p class="description">
-                            No hay ningún token configurado.
-                            El usuario del token necesita permiso de escritura
-                            en el sitio de Matomo.
+                            <?php echo kh_matomo_escape(kh_matomo_t('No hay ningún token configurado. El usuario del token necesita permiso de escritura en el sitio de Matomo.')); ?>
                         </p>
                     <?php endif; ?>
 
@@ -308,11 +300,11 @@ if (!function_exists('kh_matomo_render_tracking_section')) {
     function kh_matomo_render_tracking_section($settings)
     {
     ?>
-        <h3>Seguimiento</h3>
+        <h3><?php echo kh_matomo_escape(kh_matomo_t('Seguimiento')); ?></h3>
 
         <table class="form-table">
             <tr>
-                <th scope="row">Habilitar seguimiento</th>
+                <th scope="row"><?php echo kh_matomo_escape(kh_matomo_t('Habilitar seguimiento')); ?></th>
                 <td>
                     <label>
                         <input
@@ -320,13 +312,13 @@ if (!function_exists('kh_matomo_render_tracking_section')) {
                             name="tracking_enabled"
                             value="1"
                             <?php echo $settings['tracking_enabled'] ? 'checked' : ''; ?>>
-                        Enviar eventos de redirección a Matomo.
+                        <?php echo kh_matomo_escape(kh_matomo_t('Enviar eventos de redirección a Matomo.')); ?>
                     </label>
                 </td>
             </tr>
 
             <tr>
-                <th scope="row">Anonimizar IP</th>
+                <th scope="row"><?php echo kh_matomo_escape(kh_matomo_t('Anonimizar IP')); ?></th>
                 <td>
                     <label>
                         <input
@@ -334,11 +326,10 @@ if (!function_exists('kh_matomo_render_tracking_section')) {
                             name="anonymize_ip"
                             value="1"
                             <?php echo $settings['anonymize_ip'] ? 'checked' : ''; ?>>
-                        Anonimizar la IP antes de enviarla a Matomo.
+                        <?php echo kh_matomo_escape(kh_matomo_t('Anonimizar la IP antes de enviarla a Matomo.')); ?>
                     </label>
                     <p class="description">
-                        IPv4 se reduce a /24 e IPv6 a /64. Si desactivas esta
-                        opción, se enviará la IP completa.
+                        <?php echo kh_matomo_escape(kh_matomo_t('IPv4 se reduce a /24 e IPv6 a /64. Si desactivas esta opción, se enviará la IP completa.')); ?>
                     </p>
                 </td>
             </tr>
@@ -360,33 +351,33 @@ if (!function_exists('kh_matomo_render_status_section')) {
         );
     ?>
 
-        <h3>Estado</h3>
+        <h3><?php echo kh_matomo_escape(kh_matomo_t('Estado')); ?></h3>
 
         <table class="form-table">
             <tr>
-                <th scope="row">Configuración</th>
+                <th scope="row"><?php echo kh_matomo_escape(kh_matomo_t('Configuración')); ?></th>
                 <td>
                     <?php if ($configured) : ?>
-                        <span>Credenciales configuradas.</span>
+                        <span><?php echo kh_matomo_escape(kh_matomo_t('Credenciales configuradas.')); ?></span>
                     <?php else : ?>
-                        <span>Configuración pendiente.</span>
+                        <span><?php echo kh_matomo_escape(kh_matomo_t('Configuración pendiente.')); ?></span>
                     <?php endif; ?>
                 </td>
             </tr>
 
             <tr>
-                <th scope="row">Seguimiento</th>
+                <th scope="row"><?php echo kh_matomo_escape(kh_matomo_t('Seguimiento')); ?></th>
                 <td>
                     <?php if ($settings['tracking_enabled']) : ?>
-                        <span>Habilitado</span>
+                        <span><?php echo kh_matomo_escape(kh_matomo_t('Habilitado')); ?></span>
                     <?php else : ?>
-                        <span>Deshabilitado</span>
+                        <span><?php echo kh_matomo_escape(kh_matomo_t('Deshabilitado')); ?></span>
                     <?php endif; ?>
                 </td>
             </tr>
 
             <tr>
-                <th scope="row">Versión del plugin</th>
+                <th scope="row"><?php echo kh_matomo_escape(kh_matomo_t('Versión del plugin')); ?></th>
                 <td>
                     <?php echo kh_matomo_escape(KH_MATOMO_VERSION); ?>
                 </td>
@@ -473,13 +464,13 @@ if (!function_exists('kh_matomo_handle_admin_actions')) {
         if (!kh_matomo_save_settings($result['settings'])) {
             return [
                 'type' => 'error',
-                'message' => 'No fue posible guardar la configuración.',
+                'message' => kh_matomo_t('No fue posible guardar la configuración.'),
             ];
         }
 
         return [
             'type' => 'success',
-            'message' => 'La configuración de Matomo se guardó correctamente.',
+            'message' => kh_matomo_t('La configuración de Matomo se guardó correctamente.'),
         ];
     }
 }
@@ -501,7 +492,7 @@ if (!function_exists('kh_matomo_render_admin_page')) {
         );
     ?>
         <div class="wrap">
-            <h2>KH Matomo</h2>
+            <h2><?php echo kh_matomo_escape(kh_matomo_t('KH Matomo')); ?></h2>
 
             <?php if (is_array($notice)) : ?>
                 <div class="notice notice-<?php echo kh_matomo_escape($notice['type']); ?>">
@@ -510,8 +501,7 @@ if (!function_exists('kh_matomo_render_admin_page')) {
             <?php endif; ?>
 
             <p>
-                Server-side click tracking integration
-                between YOURLS and Matomo.
+                <?php echo kh_matomo_escape(kh_matomo_t('Integración de seguimiento de clics del lado del servidor entre YOURLS y Matomo.')); ?>
             </p>
 
             <form
@@ -529,11 +519,10 @@ if (!function_exists('kh_matomo_render_admin_page')) {
                         type="button"
                         class="button"
                         id="kh-matomo-test-button">
-                        Probar conexión
+                        <?php echo kh_matomo_escape(kh_matomo_t('Probar conexión')); ?>
                     </button>
                     <span class="description">
-                        La prueba es opcional para guardar. Deja el campo del
-                        token vacío para conservar el token actual.
+                        <?php echo kh_matomo_escape(kh_matomo_t('La prueba es opcional para guardar. Deja el campo del token vacío para conservar el token actual.')); ?>
                     </span>
                 </p>
 
@@ -557,7 +546,7 @@ if (!function_exists('kh_matomo_render_admin_page')) {
                         name="kh_matomo_action"
                         value="save_settings"
                         id="kh-matomo-save-button">
-                        Guardar configuración
+                        <?php echo kh_matomo_escape(kh_matomo_t('Guardar configuración')); ?>
                     </button>
                 </p>
 
@@ -581,6 +570,22 @@ if (!function_exists('kh_matomo_render_admin_page')) {
 
                 const testButton = document.getElementById('kh-matomo-test-button');
                 const resultBox = document.getElementById('kh-matomo-test-result');
+                const strings = <?php echo json_encode([
+                    'testing' => kh_matomo_t('Probando conexión...'),
+                    'communicating' => kh_matomo_t('Comunicando con Matomo...'),
+                    'emptyResponse' => kh_matomo_t('YOURLS devolvió una respuesta vacía (HTTP %s). La acción AJAX no produjo JSON. URL: %s'),
+                    'nonJson' => kh_matomo_t('YOURLS devolvió una respuesta no JSON (HTTP %s): %s'),
+                    'rejected' => kh_matomo_t('La solicitud fue rechazada por YOURLS (HTTP %s).'),
+                    'connectionFailed' => kh_matomo_t('No fue posible validar la conexión.'),
+                    'test' => kh_matomo_t('Probar conexión'),
+                    'stage' => kh_matomo_t(' [etapa: %s]'),
+                ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+
+                function format(template, values) {
+                    return template.replace(/%s/g, function() {
+                        return values.shift();
+                    });
+                }
 
                 function invalidateTest() {
                     resultBox.textContent = '';
@@ -596,9 +601,9 @@ if (!function_exists('kh_matomo_render_admin_page')) {
                     invalidateTest();
 
                     testButton.disabled = true;
-                    testButton.textContent = 'Probando conexión...';
+                    testButton.textContent = strings.testing;
 
-                    resultBox.textContent = 'Comunicando con Matomo...';
+                    resultBox.textContent = strings.communicating;
 
                     const data = new URLSearchParams();
                     data.append('action', 'kh_matomo_test_connection');
@@ -620,9 +625,7 @@ if (!function_exists('kh_matomo_render_admin_page')) {
 
                         if (!responseBody.trim()) {
                             throw new Error(
-                                'YOURLS devolvió una respuesta vacía (HTTP ' +
-                                response.status + '). La acción AJAX no produjo JSON. URL: ' +
-                                form.dataset.testUrl
+                                format(strings.emptyResponse, [response.status, form.dataset.testUrl])
                             );
                         }
 
@@ -632,22 +635,20 @@ if (!function_exists('kh_matomo_render_admin_page')) {
                             result = JSON.parse(responseBody);
                         } catch (parseError) {
                             throw new Error(
-                                'YOURLS devolvió una respuesta no JSON (HTTP ' +
-                                response.status + '): ' + responseBody.slice(0, 160)
+                                format(strings.nonJson, [response.status, responseBody.slice(0, 160)])
                             );
                         }
 
                         if (!response.ok) {
                             throw new Error(
-                                result.message || 'La solicitud fue rechazada por YOURLS (HTTP ' +
-                                response.status + ').'
+                                result.message || format(strings.rejected, [response.status])
                             );
                         }
 
                         if (!result.success) {
                             throw new Error(
-                                (result.message || 'No fue posible validar la conexión.') +
-                                (result.step ? ' [etapa: ' + result.step + ']' : '')
+                                (result.message || strings.connectionFailed) +
+                                (result.step ? format(strings.stage, [result.step]) : '')
                             );
                         }
 
@@ -662,7 +663,7 @@ if (!function_exists('kh_matomo_render_admin_page')) {
 
                     } finally {
                         testButton.disabled = false;
-                        testButton.textContent = 'Probar conexión';
+                        testButton.textContent = strings.test;
                     }
                 });
 

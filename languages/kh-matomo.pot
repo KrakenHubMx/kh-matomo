@@ -1,0 +1,274 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the KH-Matomo package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: KH-Matomo 0.1.1-alpha\n"
+"Report-Msgid-Bugs-To: https://github.com/KrakenHubMx/kh-matomo/issues\n"
+"POT-Creation-Date: 2026-10-30 14:06-0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: includes/admin.php:29
+msgid "Matomo Tracker"
+msgstr ""
+
+#: includes/admin.php:100
+msgid "Introduce la URL base HTTPS de Matomo, sin /matomo.php ni /index.php."
+msgstr ""
+
+#: includes/admin.php:111
+msgid "El Site ID debe ser un número entero positivo."
+msgstr ""
+
+#: includes/admin.php:123
+msgid "Introduce el token de autenticación de Matomo."
+msgstr ""
+
+#: includes/admin.php:151
+msgid "No tienes autorización."
+msgstr ""
+
+#: includes/admin.php:161
+msgid "La sesión expiró. Recarga la página e inténtalo de nuevo."
+msgstr ""
+
+#: includes/admin.php:181
+msgid "Error de validación."
+msgstr ""
+
+#: includes/admin.php:199
+msgid "No se pudo completar la prueba de conexión."
+msgstr ""
+
+#: includes/admin.php:205
+msgid "Resultado inesperado."
+msgstr ""
+
+#: includes/admin.php:221
+msgid "Conexión con Matomo"
+msgstr ""
+
+#: includes/admin.php:224
+msgid ""
+"Configura la instancia de Matomo que recibirá los eventos de seguimiento de "
+"YOURLS."
+msgstr ""
+
+#: includes/admin.php:230
+msgid "URL base de Matomo"
+msgstr ""
+
+#: includes/admin.php:243
+msgid ""
+"Escribe el dominio o la carpeta donde está instalado Matomo, sin añadir /"
+"matomo.php ni /index.php."
+msgstr ""
+
+#: includes/admin.php:250
+msgid "Site ID"
+msgstr ""
+
+#: includes/admin.php:266
+msgid "Token de autenticación"
+msgstr ""
+
+#: includes/admin.php:273
+msgid ""
+"Token configurado. Introduce uno nuevo únicamente si deseas reemplazarlo. El "
+"usuario del token necesita permiso de escritura en el sitio de Matomo."
+msgstr ""
+
+#: includes/admin.php:278
+msgid ""
+"No hay ningún token configurado. El usuario del token necesita permiso de "
+"escritura en el sitio de Matomo."
+msgstr ""
+
+#: includes/admin.php:303 includes/admin.php:369
+msgid "Seguimiento"
+msgstr ""
+
+#: includes/admin.php:307
+msgid "Habilitar seguimiento"
+msgstr ""
+
+#: includes/admin.php:315
+msgid "Enviar eventos de redirección a Matomo."
+msgstr ""
+
+#: includes/admin.php:321
+msgid "Anonimizar IP"
+msgstr ""
+
+#: includes/admin.php:329
+msgid "Anonimizar la IP antes de enviarla a Matomo."
+msgstr ""
+
+#: includes/admin.php:332
+msgid ""
+"IPv4 se reduce a /24 e IPv6 a /64. Si desactivas esta opción, se enviará la "
+"IP completa."
+msgstr ""
+
+#: includes/admin.php:354
+msgid "Estado"
+msgstr ""
+
+#: includes/admin.php:358
+msgid "Configuración"
+msgstr ""
+
+#: includes/admin.php:361
+msgid "Credenciales configuradas."
+msgstr ""
+
+#: includes/admin.php:363
+msgid "Configuración pendiente."
+msgstr ""
+
+#: includes/admin.php:372
+msgid "Habilitado"
+msgstr ""
+
+#: includes/admin.php:374
+msgid "Deshabilitado"
+msgstr ""
+
+#: includes/admin.php:380
+msgid "Versión del plugin"
+msgstr ""
+
+#: includes/admin.php:467
+msgid "No fue posible guardar la configuración."
+msgstr ""
+
+#: includes/admin.php:473
+msgid "La configuración de Matomo se guardó correctamente."
+msgstr ""
+
+#: includes/admin.php:495
+msgid "KH Matomo"
+msgstr ""
+
+#: includes/admin.php:504
+msgid ""
+"Integración de seguimiento de clics del lado del servidor entre YOURLS y "
+"Matomo."
+msgstr ""
+
+#: includes/admin.php:522 includes/admin.php:580
+msgid "Probar conexión"
+msgstr ""
+
+#: includes/admin.php:525
+msgid ""
+"La prueba es opcional para guardar. Deja el campo del token vacío para "
+"conservar el token actual."
+msgstr ""
+
+#: includes/admin.php:549
+msgid "Guardar configuración"
+msgstr ""
+
+#: includes/admin.php:574
+msgid "Probando conexión..."
+msgstr ""
+
+#: includes/admin.php:575
+msgid "Comunicando con Matomo..."
+msgstr ""
+
+#: includes/admin.php:576
+#, php-format
+msgid ""
+"YOURLS devolvió una respuesta vacía (HTTP %s). La acción AJAX no produjo "
+"JSON. URL: %s"
+msgstr ""
+
+#: includes/admin.php:577
+#, php-format
+msgid "YOURLS devolvió una respuesta no JSON (HTTP %s): %s"
+msgstr ""
+
+#: includes/admin.php:578
+#, php-format
+msgid "La solicitud fue rechazada por YOURLS (HTTP %s)."
+msgstr ""
+
+#: includes/admin.php:579
+msgid "No fue posible validar la conexión."
+msgstr ""
+
+#: includes/admin.php:581
+#, php-format
+msgid " [etapa: %s]"
+msgstr ""
+
+#: includes/matomo-api.php:23
+msgid "La extensión PHP cURL no está disponible."
+msgstr ""
+
+#: includes/matomo-api.php:38
+msgid "La URL y el token de Matomo son obligatorios."
+msgstr ""
+
+#: includes/matomo-api.php:60
+msgid "No fue posible inicializar la conexión con Matomo."
+msgstr ""
+
+#: includes/matomo-api.php:91
+msgid ""
+"No fue posible establecer comunicación con Matomo. Verifica la URL y la "
+"disponibilidad del servicio."
+msgstr ""
+
+#: includes/matomo-api.php:100
+#, php-format
+msgid "Matomo respondió con HTTP %1$s. Respuesta: %2$s"
+msgstr ""
+
+#: includes/matomo-api.php:113
+msgid "Matomo respondió con un formato de datos inesperado."
+msgstr ""
+
+#: includes/matomo-api.php:124
+msgid ""
+"Matomo rechazó la solicitud. Verifica el token y los permisos de la cuenta."
+msgstr ""
+
+#: includes/matomo-api.php:131
+msgid "Solicitud procesada correctamente."
+msgstr ""
+
+#: includes/matomo-api.php:242
+msgid "El Site ID no es válido."
+msgstr ""
+
+#: includes/matomo-api.php:264
+msgid "Matomo devolvió una respuesta de permisos inesperada."
+msgstr ""
+
+#: includes/matomo-api.php:272
+msgid ""
+"Conexión correcta. El token puede registrar eventos en el sitio configurado."
+msgstr ""
+
+#: includes/matomo-api.php:281
+#, php-format
+msgid "No se pudieron verificar los permisos del token en Matomo. %s"
+msgstr ""
+
+#: includes/matomo-api.php:289
+msgid ""
+"El token no tiene permisos de escritura ni de administración en el sitio "
+"configurado."
+msgstr ""

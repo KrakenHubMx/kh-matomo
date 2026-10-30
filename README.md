@@ -52,6 +52,23 @@ After saving, enable **Habilitar seguimiento** to send redirect events. IP
 anonymization is enabled by default: IPv4 is reduced to `/24` and IPv6 to `/64`
 before transmission. Disabling that setting sends the full client IP to Matomo.
 
+## Translations
+
+The plugin uses YOURLS' native gettext functions and the `kh-matomo` text
+domain. The `languages` directory includes English (`en_US`), Spanish for
+Spain (`es_ES`) and Mexico (`es_MX`), plus the translation template
+`kh-matomo.pot`. The plugin loads `kh-matomo-<locale>.mo` using the locale
+configured in YOURLS. After editing a `.po` file, rebuild its `.mo` file with:
+
+```bash
+msgfmt --check --check-format \
+  --output-file=languages/kh-matomo-en_US.mo \
+  languages/kh-matomo-en_US.po
+```
+
+Use the corresponding locale name for other catalogs and keep each `.po` source
+alongside its compiled `.mo` file.
+
 ## Event data
 
 Each tracked redirect sends:

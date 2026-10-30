@@ -20,7 +20,7 @@ if (!function_exists('kh_matomo_api_request')) {
         if (!function_exists('curl_init')) {
             return [
                 'success' => false,
-                'message' => 'La extensión PHP cURL no está disponible.',
+                'message' => kh_matomo_t('La extensión PHP cURL no está disponible.'),
                 'data'    => null,
             ];
         }
@@ -35,7 +35,7 @@ if (!function_exists('kh_matomo_api_request')) {
         if ($base_url === '' || $token === '') {
             return [
                 'success' => false,
-                'message' => 'La URL y el token de Matomo son obligatorios.',
+                'message' => kh_matomo_t('La URL y el token de Matomo son obligatorios.'),
                 'data'    => null,
             ];
         }
@@ -57,7 +57,7 @@ if (!function_exists('kh_matomo_api_request')) {
         if ($curl === false) {
             return [
                 'success' => false,
-                'message' => 'No fue posible inicializar la conexión con Matomo.',
+                'message' => kh_matomo_t('No fue posible inicializar la conexión con Matomo.'),
                 'data'    => null,
             ];
         }
@@ -88,7 +88,7 @@ if (!function_exists('kh_matomo_api_request')) {
         if ($response === false || $curl_error !== 0) {
             return [
                 'success' => false,
-                'message' => 'No fue posible establecer comunicación con Matomo. Verifica la URL y la disponibilidad del servicio.',
+                'message' => kh_matomo_t('No fue posible establecer comunicación con Matomo. Verifica la URL y la disponibilidad del servicio.'),
                 'data'    => null,
             ];
         }
@@ -96,8 +96,11 @@ if (!function_exists('kh_matomo_api_request')) {
         if ($http_code < 200 || $http_code >= 300) {
             return [
                 'success' => false,
-                'message' => 'Matomo respondió con HTTP ' . $http_code
-                    . '. Respuesta: ' . substr(strip_tags($response), 0, 500),
+                'message' => sprintf(
+                    kh_matomo_t('Matomo respondió con HTTP %1$s. Respuesta: %2$s'),
+                    $http_code,
+                    substr(strip_tags($response), 0, 500)
+                ),
                 'data' => null,
             ];
         }
@@ -107,7 +110,7 @@ if (!function_exists('kh_matomo_api_request')) {
         if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
             return [
                 'success' => false,
-                'message' => 'Matomo respondió con un formato de datos inesperado.',
+                'message' => kh_matomo_t('Matomo respondió con un formato de datos inesperado.'),
                 'data'    => null,
             ];
         }
@@ -118,14 +121,14 @@ if (!function_exists('kh_matomo_api_request')) {
         ) {
             return [
                 'success' => false,
-                'message' => 'Matomo rechazó la solicitud. Verifica el token y los permisos de la cuenta.',
+                'message' => kh_matomo_t('Matomo rechazó la solicitud. Verifica el token y los permisos de la cuenta.'),
                 'data'    => null,
             ];
         }
 
         return [
             'success' => true,
-            'message' => 'Solicitud procesada correctamente.',
+                'message' => kh_matomo_t('Solicitud procesada correctamente.'),
             'data'    => $decoded,
         ];
     }
@@ -236,7 +239,7 @@ if (!function_exists('kh_matomo_test_connection')) {
         if ($site_id === '' || !ctype_digit($site_id) || (int) $site_id < 1) {
             return [
                 'success' => false,
-                'message' => 'El Site ID no es válido.',
+                'message' => kh_matomo_t('El Site ID no es válido.'),
             ];
         }
 
@@ -258,7 +261,7 @@ if (!function_exists('kh_matomo_test_connection')) {
             }
 
             if (!is_array($response['data'])) {
-                $permission_api_error = 'Matomo devolvió una respuesta de permisos inesperada.';
+                $permission_api_error = kh_matomo_t('Matomo devolvió una respuesta de permisos inesperada.');
                 continue;
             }
 
@@ -266,7 +269,7 @@ if (!function_exists('kh_matomo_test_connection')) {
             if (in_array($site_id, $accessible_sites, true)) {
                 return [
                     'success' => true,
-                    'message' => 'Conexión correcta. El token puede registrar eventos en el sitio configurado.',
+                    'message' => kh_matomo_t('Conexión correcta. El token puede registrar eventos en el sitio configurado.'),
                 ];
             }
         }
@@ -274,13 +277,16 @@ if (!function_exists('kh_matomo_test_connection')) {
         if ($permission_api_error !== null) {
             return [
                 'success' => false,
-                'message' => 'No se pudieron verificar los permisos del token en Matomo. ' . $permission_api_error,
+                'message' => sprintf(
+                    kh_matomo_t('No se pudieron verificar los permisos del token en Matomo. %s'),
+                    $permission_api_error
+                ),
             ];
         }
 
         return [
             'success' => false,
-            'message' => 'El token no tiene permisos de escritura ni de administración en el sitio configurado.',
+            'message' => kh_matomo_t('El token no tiene permisos de escritura ni de administración en el sitio configurado.'),
         ];
     }
 }

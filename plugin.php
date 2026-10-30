@@ -13,7 +13,7 @@ if ( !defined( 'YOURLS_ABSPATH' ) ) {
 }
 
 if ( !defined( 'KH_MATOMO_VERSION' ) ) {
-    define( 'KH_MATOMO_VERSION', '0.1.0' );
+    define( 'KH_MATOMO_VERSION', '0.1.1-alpha' );
 }
 
 if ( !defined( 'KH_MATOMO_DIR' ) ) {
@@ -26,6 +26,8 @@ if ( !defined( 'KH_MATOMO_FILE' ) ) {
 
 // Plugin modules.
 require_once KH_MATOMO_DIR . '/includes/settings.php';
+require_once KH_MATOMO_DIR . '/includes/i18n.php';
+yourls_add_action('plugins_loaded', 'kh_matomo_load_textdomain');
 require_once KH_MATOMO_DIR . '/includes/matomo-api.php';
 require_once KH_MATOMO_DIR . '/includes/tracker.php';
 require_once KH_MATOMO_DIR . '/includes/admin.php';

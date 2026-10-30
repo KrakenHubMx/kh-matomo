@@ -1,0 +1,236 @@
+msgid ""
+msgstr "Project-Id-Version: KH-Matomo 0.1.1-alpha\nReport-Msgid-Bugs-To: https://github.com/KrakenHubMx/kh-matomo/issues\nPO-Revision-Date: 2026-10-30 14:16-0600\nLast-Translator: Joseph García <joseph@krakenhub.net>\nLanguage-Team: KH Matomo <joseph@krakenhub.net>\nLanguage: en_US\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/admin.php:29
+msgid "Matomo Tracker"
+msgstr "Matomo Tracker"
+
+#: includes/admin.php:100
+msgid "Introduce la URL base HTTPS de Matomo, sin /matomo.php ni /index.php."
+msgstr "Enter the Matomo base HTTPS URL without /matomo.php or /index.php."
+
+#: includes/admin.php:111
+msgid "El Site ID debe ser un número entero positivo."
+msgstr "The Site ID must be a positive integer."
+
+#: includes/admin.php:123
+msgid "Introduce el token de autenticación de Matomo."
+msgstr "Enter the Matomo authentication token."
+
+#: includes/admin.php:151
+msgid "No tienes autorización."
+msgstr "You are not authorized."
+
+#: includes/admin.php:161
+msgid "La sesión expiró. Recarga la página e inténtalo de nuevo."
+msgstr "Your session expired. Reload the page and try again."
+
+#: includes/admin.php:181
+msgid "Error de validación."
+msgstr "Validation error."
+
+#: includes/admin.php:199
+msgid "No se pudo completar la prueba de conexión."
+msgstr "The connection test could not be completed."
+
+#: includes/admin.php:205
+msgid "Resultado inesperado."
+msgstr "Unexpected result."
+
+#: includes/admin.php:221
+msgid "Conexión con Matomo"
+msgstr "Matomo connection"
+
+#: includes/admin.php:224
+msgid "Configura la instancia de Matomo que recibirá los eventos de seguimiento de YOURLS."
+msgstr "Configure the Matomo instance that will receive YOURLS tracking events."
+
+#: includes/admin.php:230
+msgid "URL base de Matomo"
+msgstr "Matomo base URL"
+
+#: includes/admin.php:243
+msgid "Escribe el dominio o la carpeta donde está instalado Matomo, sin añadir /matomo.php ni /index.php."
+msgstr "Enter the domain or directory where Matomo is installed. Do not add /matomo.php or /index.php."
+
+#: includes/admin.php:250
+msgid "Site ID"
+msgstr "Site ID"
+
+#: includes/admin.php:266
+msgid "Token de autenticación"
+msgstr "Authentication token"
+
+#: includes/admin.php:273
+msgid "Token configurado. Introduce uno nuevo únicamente si deseas reemplazarlo. El usuario del token necesita permiso de escritura en el sitio de Matomo."
+msgstr "Token configured. Enter a new one only if you want to replace it. The token user needs write access to the Matomo site."
+
+#: includes/admin.php:278
+msgid "No hay ningún token configurado. El usuario del token necesita permiso de escritura en el sitio de Matomo."
+msgstr "No token is configured. The token user needs write access to the Matomo site."
+
+#: includes/admin.php:303 includes/admin.php:369
+msgid "Seguimiento"
+msgstr "Tracking"
+
+#: includes/admin.php:307
+msgid "Habilitar seguimiento"
+msgstr "Enable tracking"
+
+#: includes/admin.php:315
+msgid "Enviar eventos de redirección a Matomo."
+msgstr "Send redirect events to Matomo."
+
+#: includes/admin.php:321
+msgid "Anonimizar IP"
+msgstr "Anonymize IP"
+
+#: includes/admin.php:329
+msgid "Anonimizar la IP antes de enviarla a Matomo."
+msgstr "Anonymize the IP address before sending it to Matomo."
+
+#: includes/admin.php:332
+msgid "IPv4 se reduce a /24 e IPv6 a /64. Si desactivas esta opción, se enviará la IP completa."
+msgstr "IPv4 addresses are masked to /24 and IPv6 addresses to /64. If you disable this option, the full IP address will be sent."
+
+#: includes/admin.php:354
+msgid "Estado"
+msgstr "Status"
+
+#: includes/admin.php:358
+msgid "Configuración"
+msgstr "Configuration"
+
+#: includes/admin.php:361
+msgid "Credenciales configuradas."
+msgstr "Credentials configured."
+
+#: includes/admin.php:363
+msgid "Configuración pendiente."
+msgstr "Configuration pending."
+
+#: includes/admin.php:372
+msgid "Habilitado"
+msgstr "Enabled"
+
+#: includes/admin.php:374
+msgid "Deshabilitado"
+msgstr "Disabled"
+
+#: includes/admin.php:380
+msgid "Versión del plugin"
+msgstr "Plugin version"
+
+#: includes/admin.php:467
+msgid "No fue posible guardar la configuración."
+msgstr "Could not save the configuration."
+
+#: includes/admin.php:473
+msgid "La configuración de Matomo se guardó correctamente."
+msgstr "Matomo settings saved successfully."
+
+#: includes/admin.php:495
+msgid "KH Matomo"
+msgstr "KH Matomo"
+
+#: includes/admin.php:504
+msgid "Integración de seguimiento de clics del lado del servidor entre YOURLS y Matomo."
+msgstr "Server-side click tracking integration between YOURLS and Matomo."
+
+#: includes/admin.php:522 includes/admin.php:580
+msgid "Probar conexión"
+msgstr "Test connection"
+
+#: includes/admin.php:525
+msgid "La prueba es opcional para guardar. Deja el campo del token vacío para conservar el token actual."
+msgstr "Testing is optional when saving. Leave the token field blank to keep the current token."
+
+#: includes/admin.php:549
+msgid "Guardar configuración"
+msgstr "Save settings"
+
+#: includes/admin.php:574
+msgid "Probando conexión..."
+msgstr "Testing connection..."
+
+#: includes/admin.php:575
+msgid "Comunicando con Matomo..."
+msgstr "Contacting Matomo..."
+
+#: includes/admin.php:576
+#, php-format
+msgid "YOURLS devolvió una respuesta vacía (HTTP %s). La acción AJAX no produjo JSON. URL: %s"
+msgstr "YOURLS returned an empty response (HTTP %s). The AJAX action did not produce JSON. URL: %s"
+
+#: includes/admin.php:577
+#, php-format
+msgid "YOURLS devolvió una respuesta no JSON (HTTP %s): %s"
+msgstr "YOURLS returned a non-JSON response (HTTP %s): %s"
+
+#: includes/admin.php:578
+#, php-format
+msgid "La solicitud fue rechazada por YOURLS (HTTP %s)."
+msgstr "The request was rejected by YOURLS (HTTP %s)."
+
+#: includes/admin.php:579
+msgid "No fue posible validar la conexión."
+msgstr "Could not validate the connection."
+
+#: includes/admin.php:581
+#, php-format
+msgid " [etapa: %s]"
+msgstr " [stage: %s]"
+
+#: includes/matomo-api.php:23
+msgid "La extensión PHP cURL no está disponible."
+msgstr "The PHP cURL extension is not available."
+
+#: includes/matomo-api.php:38
+msgid "La URL y el token de Matomo son obligatorios."
+msgstr "The Matomo URL and token are required."
+
+#: includes/matomo-api.php:60
+msgid "No fue posible inicializar la conexión con Matomo."
+msgstr "Could not initialize the connection to Matomo."
+
+#: includes/matomo-api.php:91
+msgid "No fue posible establecer comunicación con Matomo. Verifica la URL y la disponibilidad del servicio."
+msgstr "Could not communicate with Matomo. Check the URL and service availability."
+
+#: includes/matomo-api.php:100
+#, php-format
+msgid "Matomo respondió con HTTP %1$s. Respuesta: %2$s"
+msgstr "Matomo returned HTTP %1$s. Response: %2$s"
+
+#: includes/matomo-api.php:113
+msgid "Matomo respondió con un formato de datos inesperado."
+msgstr "Matomo returned an unexpected data format."
+
+#: includes/matomo-api.php:124
+msgid "Matomo rechazó la solicitud. Verifica el token y los permisos de la cuenta."
+msgstr "Matomo rejected the request. Check the token and account permissions."
+
+#: includes/matomo-api.php:131
+msgid "Solicitud procesada correctamente."
+msgstr "Request processed successfully."
+
+#: includes/matomo-api.php:242
+msgid "El Site ID no es válido."
+msgstr "The Site ID is invalid."
+
+#: includes/matomo-api.php:264
+msgid "Matomo devolvió una respuesta de permisos inesperada."
+msgstr "Matomo returned an unexpected permissions response."
+
+#: includes/matomo-api.php:272
+msgid "Conexión correcta. El token puede registrar eventos en el sitio configurado."
+msgstr "Connection successful. The token can record events on the configured site."
+
+#: includes/matomo-api.php:281
+#, php-format
+msgid "No se pudieron verificar los permisos del token en Matomo. %s"
+msgstr "Could not verify the token permissions in Matomo. %s"
+
+#: includes/matomo-api.php:289
+msgid "El token no tiene permisos de escritura ni de administración en el sitio configurado."
+msgstr "The token does not have write or administrator access to the configured site."
