@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KH-Matomo 0.1.1-alpha\n"
 "Report-Msgid-Bugs-To: https://github.com/KrakenHubMx/kh-matomo/issues\n"
-"POT-Creation-Date: 2026-10-30 14:06-0600\n"
+"POT-Creation-Date: 2026-11-01 19:08-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,7 +93,7 @@ msgid ""
 "escritura en el sitio de Matomo."
 msgstr ""
 
-#: includes/admin.php:303 includes/admin.php:369
+#: includes/admin.php:303 includes/admin.php:370
 msgid "Seguimiento"
 msgstr ""
 
@@ -119,96 +119,100 @@ msgid ""
 "IP completa."
 msgstr ""
 
-#: includes/admin.php:354
+#: includes/admin.php:355
 msgid "Estado"
 msgstr ""
 
-#: includes/admin.php:358
+#: includes/admin.php:359
 msgid "Configuración"
 msgstr ""
 
-#: includes/admin.php:361
+#: includes/admin.php:362
 msgid "Credenciales configuradas."
 msgstr ""
 
-#: includes/admin.php:363
+#: includes/admin.php:364
 msgid "Configuración pendiente."
 msgstr ""
 
-#: includes/admin.php:372
+#: includes/admin.php:373
 msgid "Habilitado"
 msgstr ""
 
-#: includes/admin.php:374
+#: includes/admin.php:375
 msgid "Deshabilitado"
 msgstr ""
 
-#: includes/admin.php:380
+#: includes/admin.php:381
 msgid "Versión del plugin"
 msgstr ""
 
-#: includes/admin.php:467
+#: includes/admin.php:386
+msgid "Actualización disponible:"
+msgstr ""
+
+#: includes/admin.php:475
 msgid "No fue posible guardar la configuración."
 msgstr ""
 
-#: includes/admin.php:473
+#: includes/admin.php:481
 msgid "La configuración de Matomo se guardó correctamente."
 msgstr ""
 
-#: includes/admin.php:495
+#: includes/admin.php:503
 msgid "KH Matomo"
 msgstr ""
 
-#: includes/admin.php:504
+#: includes/admin.php:512
 msgid ""
 "Integración de seguimiento de clics del lado del servidor entre YOURLS y "
 "Matomo."
 msgstr ""
 
-#: includes/admin.php:522 includes/admin.php:580
+#: includes/admin.php:530 includes/admin.php:588
 msgid "Probar conexión"
 msgstr ""
 
-#: includes/admin.php:525
+#: includes/admin.php:533
 msgid ""
 "La prueba es opcional para guardar. Deja el campo del token vacío para "
 "conservar el token actual."
 msgstr ""
 
-#: includes/admin.php:549
+#: includes/admin.php:557
 msgid "Guardar configuración"
 msgstr ""
 
-#: includes/admin.php:574
+#: includes/admin.php:582
 msgid "Probando conexión..."
 msgstr ""
 
-#: includes/admin.php:575
+#: includes/admin.php:583
 msgid "Comunicando con Matomo..."
 msgstr ""
 
-#: includes/admin.php:576
+#: includes/admin.php:584
 #, php-format
 msgid ""
 "YOURLS devolvió una respuesta vacía (HTTP %s). La acción AJAX no produjo "
 "JSON. URL: %s"
 msgstr ""
 
-#: includes/admin.php:577
+#: includes/admin.php:585
 #, php-format
 msgid "YOURLS devolvió una respuesta no JSON (HTTP %s): %s"
 msgstr ""
 
-#: includes/admin.php:578
+#: includes/admin.php:586
 #, php-format
 msgid "La solicitud fue rechazada por YOURLS (HTTP %s)."
 msgstr ""
 
-#: includes/admin.php:579
+#: includes/admin.php:587
 msgid "No fue posible validar la conexión."
 msgstr ""
 
-#: includes/admin.php:581
+#: includes/admin.php:589
 #, php-format
 msgid " [etapa: %s]"
 msgstr ""

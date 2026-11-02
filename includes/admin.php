@@ -344,6 +344,7 @@ if (!function_exists('kh_matomo_render_tracking_section')) {
 if (!function_exists('kh_matomo_render_status_section')) {
     function kh_matomo_render_status_section($settings)
     {
+        $update = kh_matomo_get_update_status();
         $configured = (
             $settings['matomo_url'] !== ''
             && $settings['site_id'] !== ''
@@ -380,6 +381,13 @@ if (!function_exists('kh_matomo_render_status_section')) {
                 <th scope="row"><?php echo kh_matomo_escape(kh_matomo_t('Versión del plugin')); ?></th>
                 <td>
                     <?php echo kh_matomo_escape(KH_MATOMO_VERSION); ?>
+                    <?php if ($update['update_available']) : ?>
+                        <br>
+                        <strong><?php echo kh_matomo_escape(kh_matomo_t('Actualización disponible:')); ?></strong>
+                        <a href="<?php echo kh_matomo_escape($update['release_url']); ?>" target="_blank" rel="noopener noreferrer">
+                            <?php echo kh_matomo_escape($update['latest_version']); ?>
+                        </a>
+                    <?php endif; ?>
                 </td>
             </tr>
         </table>

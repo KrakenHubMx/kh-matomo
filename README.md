@@ -69,6 +69,14 @@ msgfmt --check --check-format \
 Use the corresponding locale name for other catalogs and keep each `.po` source
 alongside its compiled `.mo` file.
 
+## Update notice
+
+The plugin settings page checks GitHub for the latest published stable release
+and compares it with the installed plugin version. Drafts and prereleases are
+not offered as updates. The result is cached for 24 hours (2 hours after a
+failed check). This is an update notice only; it does not download or install
+updates.
+
 ## Event data
 
 Each tracked redirect sends:

@@ -57,6 +57,12 @@ User-facing plugin strings use YOURLS' native gettext functions with the
 `languages/kh-matomo-<locale>.mo`; the translation template is
 `languages/kh-matomo.pot`.
 
+The plugin settings page checks GitHub's public latest-release endpoint for a
+newer stable version. Drafts and prereleases are excluded. It caches successful
+and no-release responses for 24 hours and failures for 2 hours. This check
+never downloads or installs plugin files, and it sends no credentials to
+GitHub.
+
 Settings are stored in the YOURLS option `kh_matomo_settings`. The option is a
 single configuration array; the plugin creates no additional database tables.
 Settings must survive updates and deactivation. Deleting plugin files must not

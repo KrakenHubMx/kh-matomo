@@ -1,5 +1,16 @@
 msgid ""
-msgstr "Project-Id-Version: KH-Matomo 0.1.1-alpha\nReport-Msgid-Bugs-To: https://github.com/KrakenHubMx/kh-matomo/issues\nPO-Revision-Date: 2026-10-30 14:16-0600\nLast-Translator: Joseph García <joseph@krakenhub.net>\nLanguage-Team: KH Matomo <joseph@krakenhub.net>\nLanguage: en_US\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
+msgstr ""
+"Project-Id-Version: KH-Matomo 0.1.1-alpha\n"
+"Report-Msgid-Bugs-To: https://github.com/KrakenHubMx/kh-matomo/issues\n"
+"POT-Creation-Date: 2026-11-01 19:08-0600\n"
+"PO-Revision-Date: 2026-11-01 18:59-0600\n"
+"Last-Translator: Joseph García <joseph@krakenhub.net>\n"
+"Language-Team: KH Matomo <joseph@krakenhub.net>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: includes/admin.php:29
 msgid "Matomo Tracker"
@@ -42,16 +53,23 @@ msgid "Conexión con Matomo"
 msgstr "Matomo connection"
 
 #: includes/admin.php:224
-msgid "Configura la instancia de Matomo que recibirá los eventos de seguimiento de YOURLS."
-msgstr "Configure the Matomo instance that will receive YOURLS tracking events."
+msgid ""
+"Configura la instancia de Matomo que recibirá los eventos de seguimiento de "
+"YOURLS."
+msgstr ""
+"Configure the Matomo instance that will receive YOURLS tracking events."
 
 #: includes/admin.php:230
 msgid "URL base de Matomo"
 msgstr "Matomo base URL"
 
 #: includes/admin.php:243
-msgid "Escribe el dominio o la carpeta donde está instalado Matomo, sin añadir /matomo.php ni /index.php."
-msgstr "Enter the domain or directory where Matomo is installed. Do not add /matomo.php or /index.php."
+msgid ""
+"Escribe el dominio o la carpeta donde está instalado Matomo, sin añadir /"
+"matomo.php ni /index.php."
+msgstr ""
+"Enter the domain or directory where Matomo is installed. Do not add /"
+"matomo.php or /index.php."
 
 #: includes/admin.php:250
 msgid "Site ID"
@@ -62,14 +80,21 @@ msgid "Token de autenticación"
 msgstr "Authentication token"
 
 #: includes/admin.php:273
-msgid "Token configurado. Introduce uno nuevo únicamente si deseas reemplazarlo. El usuario del token necesita permiso de escritura en el sitio de Matomo."
-msgstr "Token configured. Enter a new one only if you want to replace it. The token user needs write access to the Matomo site."
+msgid ""
+"Token configurado. Introduce uno nuevo únicamente si deseas reemplazarlo. El "
+"usuario del token necesita permiso de escritura en el sitio de Matomo."
+msgstr ""
+"Token configured. Enter a new one only if you want to replace it. The token "
+"user needs write access to the Matomo site."
 
 #: includes/admin.php:278
-msgid "No hay ningún token configurado. El usuario del token necesita permiso de escritura en el sitio de Matomo."
-msgstr "No token is configured. The token user needs write access to the Matomo site."
+msgid ""
+"No hay ningún token configurado. El usuario del token necesita permiso de "
+"escritura en el sitio de Matomo."
+msgstr ""
+"No token is configured. The token user needs write access to the Matomo site."
 
-#: includes/admin.php:303 includes/admin.php:369
+#: includes/admin.php:303 includes/admin.php:370
 msgid "Seguimiento"
 msgstr "Tracking"
 
@@ -90,93 +115,111 @@ msgid "Anonimizar la IP antes de enviarla a Matomo."
 msgstr "Anonymize the IP address before sending it to Matomo."
 
 #: includes/admin.php:332
-msgid "IPv4 se reduce a /24 e IPv6 a /64. Si desactivas esta opción, se enviará la IP completa."
-msgstr "IPv4 addresses are masked to /24 and IPv6 addresses to /64. If you disable this option, the full IP address will be sent."
+msgid ""
+"IPv4 se reduce a /24 e IPv6 a /64. Si desactivas esta opción, se enviará la "
+"IP completa."
+msgstr ""
+"IPv4 addresses are masked to /24 and IPv6 addresses to /64. If you disable "
+"this option, the full IP address will be sent."
 
-#: includes/admin.php:354
+#: includes/admin.php:355
 msgid "Estado"
 msgstr "Status"
 
-#: includes/admin.php:358
+#: includes/admin.php:359
 msgid "Configuración"
 msgstr "Configuration"
 
-#: includes/admin.php:361
+#: includes/admin.php:362
 msgid "Credenciales configuradas."
 msgstr "Credentials configured."
 
-#: includes/admin.php:363
+#: includes/admin.php:364
 msgid "Configuración pendiente."
 msgstr "Configuration pending."
 
-#: includes/admin.php:372
+#: includes/admin.php:373
 msgid "Habilitado"
 msgstr "Enabled"
 
-#: includes/admin.php:374
+#: includes/admin.php:375
 msgid "Deshabilitado"
 msgstr "Disabled"
 
-#: includes/admin.php:380
+#: includes/admin.php:381
 msgid "Versión del plugin"
 msgstr "Plugin version"
 
-#: includes/admin.php:467
+#: includes/admin.php:386
+msgid "Actualización disponible:"
+msgstr "Update available:"
+
+#: includes/admin.php:475
 msgid "No fue posible guardar la configuración."
 msgstr "Could not save the configuration."
 
-#: includes/admin.php:473
+#: includes/admin.php:481
 msgid "La configuración de Matomo se guardó correctamente."
 msgstr "Matomo settings saved successfully."
 
-#: includes/admin.php:495
+#: includes/admin.php:503
 msgid "KH Matomo"
 msgstr "KH Matomo"
 
-#: includes/admin.php:504
-msgid "Integración de seguimiento de clics del lado del servidor entre YOURLS y Matomo."
+#: includes/admin.php:512
+msgid ""
+"Integración de seguimiento de clics del lado del servidor entre YOURLS y "
+"Matomo."
 msgstr "Server-side click tracking integration between YOURLS and Matomo."
 
-#: includes/admin.php:522 includes/admin.php:580
+#: includes/admin.php:530 includes/admin.php:588
 msgid "Probar conexión"
 msgstr "Test connection"
 
-#: includes/admin.php:525
-msgid "La prueba es opcional para guardar. Deja el campo del token vacío para conservar el token actual."
-msgstr "Testing is optional when saving. Leave the token field blank to keep the current token."
+#: includes/admin.php:533
+msgid ""
+"La prueba es opcional para guardar. Deja el campo del token vacío para "
+"conservar el token actual."
+msgstr ""
+"Testing is optional when saving. Leave the token field blank to keep the "
+"current token."
 
-#: includes/admin.php:549
+#: includes/admin.php:557
 msgid "Guardar configuración"
 msgstr "Save settings"
 
-#: includes/admin.php:574
+#: includes/admin.php:582
 msgid "Probando conexión..."
 msgstr "Testing connection..."
 
-#: includes/admin.php:575
+#: includes/admin.php:583
 msgid "Comunicando con Matomo..."
 msgstr "Contacting Matomo..."
 
-#: includes/admin.php:576
+#: includes/admin.php:584
 #, php-format
-msgid "YOURLS devolvió una respuesta vacía (HTTP %s). La acción AJAX no produjo JSON. URL: %s"
-msgstr "YOURLS returned an empty response (HTTP %s). The AJAX action did not produce JSON. URL: %s"
+msgid ""
+"YOURLS devolvió una respuesta vacía (HTTP %s). La acción AJAX no produjo "
+"JSON. URL: %s"
+msgstr ""
+"YOURLS returned an empty response (HTTP %s). The AJAX action did not produce "
+"JSON. URL: %s"
 
-#: includes/admin.php:577
+#: includes/admin.php:585
 #, php-format
 msgid "YOURLS devolvió una respuesta no JSON (HTTP %s): %s"
 msgstr "YOURLS returned a non-JSON response (HTTP %s): %s"
 
-#: includes/admin.php:578
+#: includes/admin.php:586
 #, php-format
 msgid "La solicitud fue rechazada por YOURLS (HTTP %s)."
 msgstr "The request was rejected by YOURLS (HTTP %s)."
 
-#: includes/admin.php:579
+#: includes/admin.php:587
 msgid "No fue posible validar la conexión."
 msgstr "Could not validate the connection."
 
-#: includes/admin.php:581
+#: includes/admin.php:589
 #, php-format
 msgid " [etapa: %s]"
 msgstr " [stage: %s]"
@@ -194,8 +237,11 @@ msgid "No fue posible inicializar la conexión con Matomo."
 msgstr "Could not initialize the connection to Matomo."
 
 #: includes/matomo-api.php:91
-msgid "No fue posible establecer comunicación con Matomo. Verifica la URL y la disponibilidad del servicio."
-msgstr "Could not communicate with Matomo. Check the URL and service availability."
+msgid ""
+"No fue posible establecer comunicación con Matomo. Verifica la URL y la "
+"disponibilidad del servicio."
+msgstr ""
+"Could not communicate with Matomo. Check the URL and service availability."
 
 #: includes/matomo-api.php:100
 #, php-format
@@ -207,7 +253,8 @@ msgid "Matomo respondió con un formato de datos inesperado."
 msgstr "Matomo returned an unexpected data format."
 
 #: includes/matomo-api.php:124
-msgid "Matomo rechazó la solicitud. Verifica el token y los permisos de la cuenta."
+msgid ""
+"Matomo rechazó la solicitud. Verifica el token y los permisos de la cuenta."
 msgstr "Matomo rejected the request. Check the token and account permissions."
 
 #: includes/matomo-api.php:131
@@ -223,8 +270,10 @@ msgid "Matomo devolvió una respuesta de permisos inesperada."
 msgstr "Matomo returned an unexpected permissions response."
 
 #: includes/matomo-api.php:272
-msgid "Conexión correcta. El token puede registrar eventos en el sitio configurado."
-msgstr "Connection successful. The token can record events on the configured site."
+msgid ""
+"Conexión correcta. El token puede registrar eventos en el sitio configurado."
+msgstr ""
+"Connection successful. The token can record events on the configured site."
 
 #: includes/matomo-api.php:281
 #, php-format
@@ -232,5 +281,8 @@ msgid "No se pudieron verificar los permisos del token en Matomo. %s"
 msgstr "Could not verify the token permissions in Matomo. %s"
 
 #: includes/matomo-api.php:289
-msgid "El token no tiene permisos de escritura ni de administración en el sitio configurado."
-msgstr "The token does not have write or administrator access to the configured site."
+msgid ""
+"El token no tiene permisos de escritura ni de administración en el sitio "
+"configurado."
+msgstr ""
+"The token does not have write or administrator access to the configured site."
