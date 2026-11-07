@@ -395,6 +395,95 @@ if (!function_exists('kh_matomo_render_status_section')) {
     }
 }
 
+/** Render sampled transport diagnostics without visitor data. */
+if (!function_exists('kh_matomo_render_diagnostics_section')) {
+    function kh_matomo_render_diagnostics_section()
+    {
+        $labels = [
+            'ok' => kh_matomo_t('Respuesta exitosa'),
+            'curl_error' => kh_matomo_t('Error de transporte'),
+            'http_error' => kh_matomo_t('Respuesta HTTP no exitosa'),
+            'curl_unavailable' => kh_matomo_t('cURL no disponible'),
+            'curl_init_failed' => kh_matomo_t('No se pudo iniciar cURL'),
+            'settings_missing' => kh_matomo_t('Configuración incompleta'),
+            'exception' => kh_matomo_t('Error interno'),
+        ];
+        ?>
+        <h3><?php echo kh_matomo_escape(kh_matomo_t('Diagnóstico de envíos')); ?></h3>
+        <p><?php echo kh_matomo_escape(kh_matomo_t('Muestra de respuestas del seguimiento: se guarda como máximo un éxito y un fallo por minuto, salvo solicitudes concurrentes. Puede omitir resultados intermedios. La prueba de conexión no se incluye.')); ?></p>
+        <p><?php echo kh_matomo_escape(kh_matomo_t('Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas se muestran en UTC.')); ?></p>
+        <div class="kh-matomo-diagnostics">
+        <?php foreach ([
+            'success' => kh_matomo_t('Último éxito registrado'),
+            'failure' => kh_matomo_t('Último fallo registrado'),
+        ] as $outcome => $title) :
+            $entry = yourls_get_option('kh_matomo_diagnostics_' . $outcome);
+            $has_entry = is_array($entry) && !empty($entry['recorded_at']);
+            $reason = $has_entry ? ($labels[$entry['reason'] ?? ''] ?? kh_matomo_t('Error interno')) : '';
+            if ($has_entry && ($entry['reason'] ?? '') === 'curl_error' && (int) ($entry['curl_errno'] ?? 0) === 28) {
+                $reason = kh_matomo_t('Tiempo de espera agotado');
+            }
+            ?>
+            <article class="kh-matomo-result<?php echo $has_entry ? ' kh-matomo-result--' . kh_matomo_escape($outcome) : ''; ?>">
+                <h4><?php echo kh_matomo_escape($title); ?></h4>
+                <?php if (!$has_entry) : ?>
+                    <p class="description"><?php echo kh_matomo_escape(kh_matomo_t('Sin registros.')); ?></p>
+                <?php else : ?>
+                    <strong><?php echo kh_matomo_escape($reason); ?></strong>
+                    <time datetime="<?php echo kh_matomo_escape(gmdate('Y-m-d\TH:i:s\Z', (int) $entry['recorded_at'])); ?>">
+                        <?php echo kh_matomo_escape(gmdate('Y-m-d H:i:s', (int) $entry['recorded_at']) . ' UTC'); ?>
+                    </time>
+                    <dl>
+                        <div><dt>HTTP</dt><dd><?php echo (int) ($entry['http_code'] ?? 0); ?></dd></div>
+                        <div><dt>cURL</dt><dd><?php echo (int) ($entry['curl_errno'] ?? 0); ?></dd></div>
+                        <div><dt><?php echo kh_matomo_escape(kh_matomo_t('Duración')); ?></dt><dd><?php echo (int) ($entry['total_time_ms'] ?? 0); ?> ms</dd></div>
+                    </dl>
+                <?php endif; ?>
+            </article>
+        <?php endforeach; ?>
+        </div>
+        <h4><?php echo kh_matomo_escape(kh_matomo_t('Historial de muestras')); ?></h4>
+        <p class="description"><?php echo kh_matomo_escape(kh_matomo_t('Hasta 10 éxitos y 10 fallos recientes, del más nuevo al más antiguo. No incluye todos los intentos.')); ?></p>
+        <?php $history = kh_matomo_get_diagnostics_history(); ?>
+        <?php if (!$history) : ?>
+            <p><?php echo kh_matomo_escape(kh_matomo_t('Sin registros.')); ?></p>
+        <?php else : ?>
+        <div class="kh-matomo-history-scroll">
+            <table class="kh-matomo-history">
+                <caption class="description"><?php echo kh_matomo_escape(kh_matomo_t('Historial de muestras')); ?></caption>
+                <thead><tr>
+                    <th scope="col"><?php echo kh_matomo_escape(kh_matomo_t('Fecha (UTC)')); ?></th>
+                    <th scope="col"><?php echo kh_matomo_escape(kh_matomo_t('Resultado')); ?></th>
+                    <th scope="col">HTTP</th><th scope="col">cURL</th>
+                    <th scope="col"><?php echo kh_matomo_escape(kh_matomo_t('Duración')); ?></th>
+                </tr></thead>
+                <tbody>
+                <?php foreach ($history as $entry) :
+                    $reason = $labels[$entry['reason'] ?? ''] ?? kh_matomo_t('Error interno');
+                    if (($entry['reason'] ?? '') === 'curl_error' && (int) ($entry['curl_errno'] ?? 0) === 28) {
+                        $reason = kh_matomo_t('Tiempo de espera agotado');
+                    }
+                    ?>
+                    <tr>
+                        <td><?php echo kh_matomo_escape(gmdate('Y-m-d H:i:s', (int) $entry['recorded_at'])); ?></td>
+                        <td><?php echo kh_matomo_escape($reason); ?></td>
+                        <td><?php echo (int) ($entry['http_code'] ?? 0); ?></td>
+                        <td><?php echo (int) ($entry['curl_errno'] ?? 0); ?></td>
+                        <td><?php echo (int) ($entry['total_time_ms'] ?? 0); ?> ms</td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php endif; ?>
+        <form method="post">
+            <?php yourls_nonce_field('kh_matomo_clear_diagnostics_history'); ?>
+            <p><button type="submit" class="button" name="kh_matomo_action" value="clear_diagnostics_history"><?php echo kh_matomo_escape(kh_matomo_t('Borrar historial de muestras')); ?></button></p>
+        </form>
+        <?php
+    }
+}
+
 /**
  * Validate complete settings input.
  */
@@ -441,6 +530,16 @@ if (!function_exists('kh_matomo_handle_admin_actions')) {
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return null;
+        }
+
+        if (($_POST['kh_matomo_action'] ?? '') === 'clear_diagnostics_history') {
+            yourls_verify_nonce('kh_matomo_clear_diagnostics_history', $_POST['nonce'] ?? '');
+            try {
+                kh_matomo_clear_diagnostics_history();
+                return ['type' => 'success', 'message' => kh_matomo_t('El historial de muestras se borró. Las tarjetas se conservan.')];
+            } catch (Throwable $e) {
+                return ['type' => 'error', 'message' => kh_matomo_t('No se pudo borrar el historial de muestras.')];
+            }
         }
 
         if (
@@ -499,7 +598,39 @@ if (!function_exists('kh_matomo_render_admin_page')) {
             'kh_matomo_test_connection'
         );
     ?>
-        <div class="wrap">
+        <style>
+            .kh-matomo-admin { max-width: 1080px; }
+            .kh-matomo-admin .kh-matomo-panel { background: #fff; border: 1px solid #d9dfe5; border-radius: 8px; padding: 24px; margin: 24px 0; box-shadow: 0 2px 5px rgba(0,0,0,.035); }
+            .kh-matomo-admin .kh-matomo-panel h3 { margin: 0 0 16px; padding-bottom: 14px; border-bottom: 1px solid #e5e9ed; font-size: 18px; color: #243447; }
+            .kh-matomo-admin .form-table { width: 100%; border-collapse: collapse; margin: 12px 0 0; }
+            .kh-matomo-admin .form-table th { width: 200px; text-align: left; font-weight: 600; }
+            .kh-matomo-admin .form-table th, .kh-matomo-admin .form-table td { padding: 14px 12px 14px 0; vertical-align: top; }
+            .kh-matomo-admin .regular-text { width: 100%; max-width: 520px; box-sizing: border-box; }
+            .kh-matomo-admin .description { color: #526170; font-size: 13px; line-height: 1.6; }
+            .kh-matomo-admin .kh-matomo-save { margin: 0 0 32px; }
+            .kh-matomo-admin #kh-matomo-test-result:empty { display: none; }
+            .kh-matomo-admin #kh-matomo-test-result:not(:empty) { margin-top: 16px; padding: 12px; }
+            .kh-matomo-admin .kh-matomo-diagnostics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
+            .kh-matomo-admin .kh-matomo-result { border: 1px solid #d9dfe5; border-top: 3px solid #748291; border-radius: 6px; padding: 20px; background: #f8fafb; }
+            .kh-matomo-admin .kh-matomo-result--success { border-top-color: #23754b; }
+            .kh-matomo-admin .kh-matomo-result--failure { border-top-color: #b14c24; }
+            .kh-matomo-admin .kh-matomo-result h4 { margin: 0 0 14px; font-size: 15px; }
+            .kh-matomo-admin .kh-matomo-result time { display: block; margin: 10px 0; color: #526170; font-size: 13px; }
+            .kh-matomo-admin .kh-matomo-result dl { display: flex; flex-wrap: wrap; gap: 20px; margin: 18px 0 0; }
+            .kh-matomo-admin .kh-matomo-result dt { font-size: 12px; color: #526170; }
+            .kh-matomo-admin .kh-matomo-result dd { margin: 5px 0 0; font-size: 16px; font-weight: 600; }
+            .kh-matomo-admin .kh-matomo-history-scroll { overflow-x: auto; }
+            .kh-matomo-admin .kh-matomo-history { width: 100%; border-collapse: collapse; margin: 12px 0; }
+            .kh-matomo-admin .kh-matomo-history caption { text-align: left; padding-bottom: 8px; }
+            .kh-matomo-admin .kh-matomo-history th, .kh-matomo-admin .kh-matomo-history td { padding: 12px; text-align: left; border-bottom: 1px solid #e5e9ed; }
+            .kh-matomo-admin .kh-matomo-history thead { background: #f0f4f7; }
+            @media (max-width: 680px) {
+                .kh-matomo-admin .kh-matomo-panel { padding: 16px; }
+                .kh-matomo-admin .kh-matomo-diagnostics { grid-template-columns: 1fr; }
+                .kh-matomo-admin .form-table th, .kh-matomo-admin .form-table td { display: block; width: auto; padding: 8px 0; }
+            }
+        </style>
+        <div class="wrap kh-matomo-admin">
             <h2><?php echo kh_matomo_escape(kh_matomo_t('KH Matomo')); ?></h2>
 
             <?php if (is_array($notice)) : ?>
@@ -520,6 +651,7 @@ if (!function_exists('kh_matomo_render_admin_page')) {
 
                 <?php yourls_nonce_field('kh_matomo_save_settings'); ?>
 
+                <section class="kh-matomo-panel">
                 <?php kh_matomo_render_connection_section($settings); ?>
 
                 <p>
@@ -539,15 +671,13 @@ if (!function_exists('kh_matomo_render_admin_page')) {
                     role="status"
                     aria-live="polite"></div>
 
-                <hr>
+                </section>
 
-                <?php kh_matomo_render_tracking_section($settings); ?>
+                <section class="kh-matomo-panel">
+                    <?php kh_matomo_render_tracking_section($settings); ?>
+                </section>
 
-                <hr>
-
-                <?php kh_matomo_render_status_section($settings); ?>
-
-                <p>
+                <p class="kh-matomo-save">
                     <button
                         type="submit"
                         class="button button-primary"
@@ -559,6 +689,14 @@ if (!function_exists('kh_matomo_render_admin_page')) {
                 </p>
 
             </form>
+
+            <section class="kh-matomo-panel">
+                <?php kh_matomo_render_status_section($settings); ?>
+            </section>
+
+            <section class="kh-matomo-panel">
+                <?php kh_matomo_render_diagnostics_section(); ?>
+            </section>
 
         </div>
 

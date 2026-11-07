@@ -125,3 +125,36 @@ Connection setup, saving, and synthetic event delivery to Matomo Live have been
 checked in the development environment. UAT still needs to verify a real HTTP
 click on a YOURLS short link and confirm that Matomo receives its keyword and
 event details.
+
+## Delivery diagnostics
+
+The settings page shows the last recorded successful response and failure from
+redirect tracking, with UTC timestamps, HTTP status, cURL error number, and
+request duration. Connection tests do not update these diagnostics. HTTP 2xx
+confirms an endpoint response, not that an event appears in Matomo reports.
+
+Two bounded YOURLS options are stored, one per outcome. Each is updated
+at most once per minute for sequential requests; concurrent requests may write
+together. These are samples, not exact last-attempt times or availability
+statistics. Intermediate errors may be omitted. No token, keyword, destination,
+referrer, User-Agent, IP, or response body is stored. Existing samples remain
+visible when tracking is disabled or connection settings change.
+
+Persistence happens during the redirect and adds database work on sampled
+requests. There are no additional network requests. Measure latency in the
+target environment before release. Diagnostic storage failures do not change
+the tracking result. Run the standalone regression checks with:
+
+```bash
+php tests/diagnostics.php
+```
+
+### Bounded sample history
+
+The diagnostic cards are followed by a history of up to ten successes and ten
+failures, sorted newest first. History is saved inside the existing outcome
+options in the same sampled write, with no additional write per redirect.
+Concurrent requests can overwrite samples; this is not an audit log. Existing
+card-only data remains compatible; history begins with the next sampled write.
+The nonce-protected clear action removes history while retaining cards and
+sampling timestamps. Samples may reappear as new clicks are tracked.

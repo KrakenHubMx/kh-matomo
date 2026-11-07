@@ -276,3 +276,96 @@ msgid ""
 "El token no tiene permisos de escritura ni de administración en el sitio "
 "configurado."
 msgstr ""
+
+#: includes/admin.php
+msgid "Respuesta exitosa"
+msgstr ""
+
+#: includes/admin.php
+msgid "Error de transporte"
+msgstr ""
+
+#: includes/admin.php
+msgid "Respuesta HTTP no exitosa"
+msgstr ""
+
+#: includes/admin.php
+msgid "cURL no disponible"
+msgstr ""
+
+#: includes/admin.php
+msgid "No se pudo iniciar cURL"
+msgstr ""
+
+#: includes/admin.php
+msgid "Configuración incompleta"
+msgstr ""
+
+#: includes/admin.php
+msgid "Error interno"
+msgstr ""
+
+#: includes/admin.php
+msgid "Diagnóstico de envíos"
+msgstr ""
+
+#: includes/admin.php
+msgid "Muestra de respuestas del seguimiento: se guarda como máximo un éxito y un fallo por minuto, salvo solicitudes concurrentes. Puede omitir resultados intermedios. La prueba de conexión no se incluye."
+msgstr ""
+
+#: includes/admin.php
+msgid "Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas se muestran en UTC."
+msgstr ""
+
+#: includes/admin.php
+msgid "Último éxito registrado"
+msgstr ""
+
+#: includes/admin.php
+msgid "Último fallo registrado"
+msgstr ""
+
+#: includes/admin.php
+msgid "Sin registros."
+msgstr ""
+
+#: includes/admin.php
+#, php-format
+msgid "HTTP: %1$d · cURL: %2$d · Duración: %3$d ms"
+msgstr ""
+
+#: includes/admin.php
+msgid "Duración"
+msgstr ""
+
+#: includes/admin.php
+msgid "Tiempo de espera agotado"
+msgstr ""
+
+#: includes/admin.php
+msgid "Historial de muestras"
+msgstr ""
+
+#: includes/admin.php
+msgid "Fecha (UTC)"
+msgstr ""
+
+#: includes/admin.php
+msgid "Resultado"
+msgstr ""
+
+#: includes/admin.php
+msgid "Borrar historial de muestras"
+msgstr ""
+
+#: includes/admin.php
+msgid "Hasta 10 éxitos y 10 fallos recientes, del más nuevo al más antiguo. No incluye todos los intentos."
+msgstr ""
+
+#: includes/admin.php
+msgid "El historial de muestras se borró. Las tarjetas se conservan."
+msgstr ""
+
+#: includes/admin.php
+msgid "No se pudo borrar el historial de muestras."
+msgstr ""

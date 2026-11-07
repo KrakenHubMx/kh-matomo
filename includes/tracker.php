@@ -52,6 +52,8 @@ if (!function_exists('kh_matomo_track_redirect')) {
             'total_time_ms' => 0,
         ];
 
+        $record_result = false;
+
         try {
             $settings = kh_matomo_get_settings();
 
@@ -67,6 +69,8 @@ if (!function_exists('kh_matomo_track_redirect')) {
                 $diagnostics['reason'] = 'tracking_disabled_or_settings_invalid';
                 return false;
             }
+
+            $record_result = true;
 
             $short_url = rtrim(yourls_get_yourls_site(), '/')
                 . '/' . ltrim($keyword, '/');
@@ -127,6 +131,10 @@ if (!function_exists('kh_matomo_track_redirect')) {
             // Tracking must never prevent YOURLS from sending the redirect.
             $diagnostics['reason'] = 'exception';
             return false;
+        } finally {
+            if ($record_result) {
+                kh_matomo_record_diagnostics($diagnostics);
+            }
         }
     }
 }

@@ -286,3 +286,96 @@ msgid ""
 "configurado."
 msgstr ""
 "The token does not have write or administrator access to the configured site."
+
+#: includes/admin.php
+msgid "Respuesta exitosa"
+msgstr "Successful response"
+
+#: includes/admin.php
+msgid "Error de transporte"
+msgstr "Transport error"
+
+#: includes/admin.php
+msgid "Respuesta HTTP no exitosa"
+msgstr "Unsuccessful HTTP response"
+
+#: includes/admin.php
+msgid "cURL no disponible"
+msgstr "cURL unavailable"
+
+#: includes/admin.php
+msgid "No se pudo iniciar cURL"
+msgstr "Could not initialize cURL"
+
+#: includes/admin.php
+msgid "Configuración incompleta"
+msgstr "Incomplete configuration"
+
+#: includes/admin.php
+msgid "Error interno"
+msgstr "Internal error"
+
+#: includes/admin.php
+msgid "Diagnóstico de envíos"
+msgstr "Delivery diagnostics"
+
+#: includes/admin.php
+msgid "Muestra de respuestas del seguimiento: se guarda como máximo un éxito y un fallo por minuto, salvo solicitudes concurrentes. Puede omitir resultados intermedios. La prueba de conexión no se incluye."
+msgstr "Sampled tracking responses: at most one success and one failure are saved per minute, except for concurrent requests. Intermediate results may be omitted. Connection tests are excluded."
+
+#: includes/admin.php
+msgid "Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas se muestran en UTC."
+msgstr "A successful response does not confirm that the event appears in Matomo reports. Dates are shown in UTC."
+
+#: includes/admin.php
+msgid "Último éxito registrado"
+msgstr "Last recorded success"
+
+#: includes/admin.php
+msgid "Último fallo registrado"
+msgstr "Last recorded failure"
+
+#: includes/admin.php
+msgid "Sin registros."
+msgstr "No records."
+
+#: includes/admin.php
+#, php-format
+msgid "HTTP: %1$d · cURL: %2$d · Duración: %3$d ms"
+msgstr "HTTP: %1$d · cURL: %2$d · Duration: %3$d ms"
+
+#: includes/admin.php
+msgid "Duración"
+msgstr "Duration"
+
+#: includes/admin.php
+msgid "Tiempo de espera agotado"
+msgstr "Request timed out"
+
+#: includes/admin.php
+msgid "Historial de muestras"
+msgstr "Sample history"
+
+#: includes/admin.php
+msgid "Fecha (UTC)"
+msgstr "Date (UTC)"
+
+#: includes/admin.php
+msgid "Resultado"
+msgstr "Result"
+
+#: includes/admin.php
+msgid "Borrar historial de muestras"
+msgstr "Clear sample history"
+
+#: includes/admin.php
+msgid "Hasta 10 éxitos y 10 fallos recientes, del más nuevo al más antiguo. No incluye todos los intentos."
+msgstr "Up to 10 recent successes and 10 failures, newest first. Not all attempts are included."
+
+#: includes/admin.php
+msgid "El historial de muestras se borró. Las tarjetas se conservan."
+msgstr "Sample history cleared. Cards are retained."
+
+#: includes/admin.php
+msgid "No se pudo borrar el historial de muestras."
+msgstr "Could not clear sample history."

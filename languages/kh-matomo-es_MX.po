@@ -293,3 +293,96 @@ msgid ""
 msgstr ""
 "El token no tiene permisos de escritura ni de administración en el sitio "
 "configurado."
+
+#: includes/admin.php
+msgid "Respuesta exitosa"
+msgstr "Respuesta exitosa"
+
+#: includes/admin.php
+msgid "Error de transporte"
+msgstr "Error de transporte"
+
+#: includes/admin.php
+msgid "Respuesta HTTP no exitosa"
+msgstr "Respuesta HTTP no exitosa"
+
+#: includes/admin.php
+msgid "cURL no disponible"
+msgstr "cURL no disponible"
+
+#: includes/admin.php
+msgid "No se pudo iniciar cURL"
+msgstr "No se pudo iniciar cURL"
+
+#: includes/admin.php
+msgid "Configuración incompleta"
+msgstr "Configuración incompleta"
+
+#: includes/admin.php
+msgid "Error interno"
+msgstr "Error interno"
+
+#: includes/admin.php
+msgid "Diagnóstico de envíos"
+msgstr "Diagnóstico de envíos"
+
+#: includes/admin.php
+msgid "Muestra de respuestas del seguimiento: se guarda como máximo un éxito y un fallo por minuto, salvo solicitudes concurrentes. Puede omitir resultados intermedios. La prueba de conexión no se incluye."
+msgstr "Muestra de respuestas del seguimiento: se guarda como máximo un éxito y un fallo por minuto, salvo solicitudes concurrentes. Puede omitir resultados intermedios. La prueba de conexión no se incluye."
+
+#: includes/admin.php
+msgid "Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas se muestran en UTC."
+msgstr "Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas se muestran en UTC."
+
+#: includes/admin.php
+msgid "Último éxito registrado"
+msgstr "Último éxito registrado"
+
+#: includes/admin.php
+msgid "Último fallo registrado"
+msgstr "Último fallo registrado"
+
+#: includes/admin.php
+msgid "Sin registros."
+msgstr "Sin registros."
+
+#: includes/admin.php
+#, php-format
+msgid "HTTP: %1$d · cURL: %2$d · Duración: %3$d ms"
+msgstr "HTTP: %1$d · cURL: %2$d · Duración: %3$d ms"
+
+#: includes/admin.php
+msgid "Duración"
+msgstr "Duración"
+
+#: includes/admin.php
+msgid "Tiempo de espera agotado"
+msgstr "Tiempo de espera agotado"
+
+#: includes/admin.php
+msgid "Historial de muestras"
+msgstr "Historial de muestras"
+
+#: includes/admin.php
+msgid "Fecha (UTC)"
+msgstr "Fecha (UTC)"
+
+#: includes/admin.php
+msgid "Resultado"
+msgstr "Resultado"
+
+#: includes/admin.php
+msgid "Borrar historial de muestras"
+msgstr "Borrar historial de muestras"
+
+#: includes/admin.php
+msgid "Hasta 10 éxitos y 10 fallos recientes, del más nuevo al más antiguo. No incluye todos los intentos."
+msgstr "Hasta 10 éxitos y 10 fallos recientes, del más nuevo al más antiguo. No incluye todos los intentos."
+
+#: includes/admin.php
+msgid "El historial de muestras se borró. Las tarjetas se conservan."
+msgstr "El historial de muestras se borró. Las tarjetas se conservan."
+
+#: includes/admin.php
+msgid "No se pudo borrar el historial de muestras."
+msgstr "No se pudo borrar el historial de muestras."
