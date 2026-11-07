@@ -12,7 +12,7 @@ the destination website.
 - Preserves the existing token when the token field is left blank; entering a
   new token replaces it.
 - Anonymizes visitor IP addresses by default before sending them to Matomo.
-- Keeps tracking best effort: a Matomo error does not cancel the redirect.
+- Keeps redirects working even when Matomo is unavailable.
 
 ## Requirements
 
@@ -28,9 +28,6 @@ the destination website.
 2. Activate **KH Matomo Tracker** in the YOURLS Plugins page.
 3. Open **Matomo Tracker** from the YOURLS Plugins page.
 
-Activation is a manual administrator action. The plugin does not activate
-itself.
-
 ## Configure
 
 Enter the Matomo base URL, Site ID, and authentication token. The base URL is
@@ -43,39 +40,18 @@ Examples:
 - `https://example.com/matomo/`
 - `https://example.matomo.cloud/`
 
-The **Test connection** button is optional when saving. Leave the token field
-blank to keep the stored token. Enter a replacement token only when you want to
-change it. The connection test accepts both site write and administrator
-permissions.
+You can use **Test connection** to check your settings before saving. Leave the
+token field blank to keep the saved token, or enter a new one to replace it.
+The connection test accepts both site write and administrator permissions.
 
-After saving, enable **Habilitar seguimiento** to send redirect events. IP
-anonymization is enabled by default: IPv4 is reduced to `/24` and IPv6 to `/64`
-before transmission. Disabling that setting sends the full client IP to Matomo.
+Turn on **Enable tracking** and save your settings to start sending redirect
+events to Matomo. IP anonymization is on by default: IPv4 addresses are masked
+to `/24` and IPv6 addresses to `/64` before they are sent. Turning it off sends
+the visitor's full IP address to Matomo.
 
-## Translations
+![KH Matomo configuration screen](docs/kh-matomo-config-screen.png)
 
-The plugin uses YOURLS' native gettext functions and the `kh-matomo` text
-domain. The `languages` directory includes English (`en_US`), Spanish for
-Spain (`es_ES`) and Mexico (`es_MX`), plus the translation template
-`kh-matomo.pot`. The plugin loads `kh-matomo-<locale>.mo` using the locale
-configured in YOURLS. After editing a `.po` file, rebuild its `.mo` file with:
-
-```bash
-msgfmt --check --check-format \
-  --output-file=languages/kh-matomo-en_US.mo \
-  languages/kh-matomo-en_US.po
-```
-
-Use the corresponding locale name for other catalogs and keep each `.po` source
-alongside its compiled `.mo` file.
-
-## Update notice
-
-The plugin settings page checks GitHub for the latest published stable release
-and compares it with the installed plugin version. Drafts and prereleases are
-not offered as updates. The result is cached for 24 hours (2 hours after a
-failed check). This is an update notice only; it does not download or install
-updates.
+![YOURLS redirect event in Matomo](docs/kh-matomo-visit-screen.png)
 
 ## Event data
 
@@ -117,14 +93,6 @@ analytics.
 - `includes/settings.php`: defaults and YOURLS option persistence.
 - `includes/tracker.php`: redirect event construction and IP anonymization.
 - `includes/matomo-api.php`: Matomo Reporting API and Tracking API requests.
-- [`docs/CONTRACT.md`](docs/CONTRACT.md): behavior, compatibility, privacy, and UAT acceptance contract.
-
-## UAT status
-
-Connection setup, saving, and synthetic event delivery to Matomo Live have been
-checked in the development environment. UAT still needs to verify a real HTTP
-click on a YOURLS short link and confirm that Matomo receives its keyword and
-event details.
 
 ## Delivery diagnostics
 
@@ -141,13 +109,8 @@ referrer, User-Agent, IP, or response body is stored. Existing samples remain
 visible when tracking is disabled or connection settings change.
 
 Persistence happens during the redirect and adds database work on sampled
-requests. There are no additional network requests. Measure latency in the
-target environment before release. Diagnostic storage failures do not change
-the tracking result. Run the standalone regression checks with:
-
-```bash
-php tests/diagnostics.php
-```
+requests, with no additional network requests. Diagnostic storage failures do
+not change the tracking result.
 
 ### Bounded sample history
 
@@ -158,3 +121,27 @@ Concurrent requests can overwrite samples; this is not an audit log. Existing
 card-only data remains compatible; history begins with the next sampled write.
 The nonce-protected clear action removes history while retaining cards and
 sampling timestamps. Samples may reappear as new clicks are tracked.
+
+## Translations
+
+The plugin uses YOURLS' native gettext functions and the `kh-matomo` text
+domain. The `languages` directory includes English (`en_US`), Spanish for
+Spain (`es_ES`) and Mexico (`es_MX`), plus the translation template
+`kh-matomo.pot`. The plugin loads `kh-matomo-<locale>.mo` using the locale
+configured in YOURLS. After editing a `.po` file, rebuild its `.mo` file with:
+
+```bash
+msgfmt --check --check-format \
+  --output-file=languages/kh-matomo-en_US.mo \
+  languages/kh-matomo-en_US.po
+```
+
+Use the corresponding locale name for other catalogs and keep each `.po` source
+alongside its compiled `.mo` file.
+
+## Update notice
+
+The settings page checks GitHub for new stable releases and lets you know when
+an update is available. Drafts and prereleases are excluded. Results are cached
+for 24 hours, or 2 hours if the check fails. Updates must be installed manually;
+the plugin does not download or install them.
