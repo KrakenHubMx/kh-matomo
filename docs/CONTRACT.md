@@ -192,3 +192,26 @@ UAT acceptance check.
 - Promote the same tested artifact from UAT to PROD.
 - Activation remains a manual YOURLS administrator decision.
 - Do not deploy to production before UAT validation and approval.
+
+## 11. Sampled delivery diagnostics
+
+The admin page displays one recorded success and one recorded failure from
+redirect tracking. Each outcome is persisted separately, no more than once per
+minute for sequential requests (concurrent writes are possible). Samples may
+omit intermediate results and must not be presented as exact availability or
+last-attempt statistics. UTC timestamps, controlled reason identifiers, HTTP
+status, cURL error numbers, and durations are the only persisted metadata.
+Connection checks and disabled tracking do not update the samples. Storage
+failures must not change tracking results or prevent redirects. HTTP success
+does not guarantee event visibility in reports. Samples survive configuration
+changes; no visitor data is stored.
+
+### Bounded sample history
+
+The diagnostic cards are followed by a history of up to ten successes and ten
+failures, sorted newest first. History is saved inside the existing outcome
+options in the same sampled write, with no additional write per redirect.
+Concurrent requests can overwrite samples; this is not an audit log. Existing
+card-only data remains compatible; history begins with the next sampled write.
+The nonce-protected clear action removes history while retaining cards and
+sampling timestamps. Samples may reappear as new clicks are tracked.
