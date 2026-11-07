@@ -2,7 +2,7 @@
 
 **Contract version:** 1.0  
 **Status:** Approved for UAT validation  
-**Plugin version:** 0.1.1-alpha
+**Plugin version:** 1.0.0
 
 This document defines the plugin's required behavior, compatibility targets,
 privacy rules, and UAT acceptance criteria. The user-facing setup guide is in

@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: KH-Matomo 0.1.1-alpha\n"
+"Project-Id-Version: KH-Matomo 1.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/KrakenHubMx/kh-matomo/issues\n"
 "POT-Creation-Date: 2026-11-01 19:08-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
