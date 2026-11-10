@@ -41,6 +41,13 @@ yourls_add_action(
     1
 );
 
+yourls_add_action(
+    'redirect_keyword_not_found',
+    'kh_matomo_handle_not_found_action',
+    10,
+    1
+);
+
 // YOURLS 1.10.6's admin-ajax.php dispatches from $_REQUEST['action'] and exits
 // silently when PHP's request_order/variables_order leaves it out. Preserve the
 // normal authenticated admin-ajax flow by restoring this plugin's action from

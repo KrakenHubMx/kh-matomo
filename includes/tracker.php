@@ -45,6 +45,14 @@ if (!function_exists('kh_matomo_anonymize_ip')) {
 if (!function_exists('kh_matomo_track_redirect')) {
     function kh_matomo_track_redirect($destination, $keyword, &$diagnostics = null)
     {
+        return kh_matomo_track_event($destination, $keyword, 'redirect', $diagnostics);
+    }
+}
+
+/** Send a redirect or missing-keyword event using the same privacy and transport rules. */
+if (!function_exists('kh_matomo_track_event')) {
+    function kh_matomo_track_event($destination, $keyword, $action, &$diagnostics = null)
+    {
         $diagnostics = [
             'reason' => 'not_attempted',
             'curl_errno' => 0,
@@ -59,12 +67,15 @@ if (!function_exists('kh_matomo_track_redirect')) {
 
             if (
                 empty($settings['tracking_enabled'])
+                || !in_array($action, ['redirect', 'keyword_not_found'], true)
+                || ($action === 'keyword_not_found' && empty($settings['track_not_found']))
                 || empty($settings['matomo_url'])
                 || empty($settings['auth_token'])
-                || !is_string($destination)
+                || ($action === 'redirect' && !is_string($destination))
                 || !is_string($keyword)
                 || trim($keyword) === ''
                 || !ctype_digit((string) $settings['site_id'])
+                || (int) $settings['site_id'] < 1
             ) {
                 $diagnostics['reason'] = 'tracking_disabled_or_settings_invalid';
                 return false;
@@ -82,15 +93,18 @@ if (!function_exists('kh_matomo_track_redirect')) {
                 'rand'        => random_int(0, PHP_INT_MAX),
                 'url'         => $short_url,
                 'e_c'         => 'YOURLS',
-                'e_a'         => 'redirect',
+                'e_a'         => $action,
                 'e_n'         => $keyword,
                 'ca'          => 1,
                 'send_image'  => 0,
-                'cvar'        => json_encode(
+            ];
+
+            if ($action === 'redirect') {
+                $params['cvar'] = json_encode(
                     [1 => ['YOURLS destination', $destination]],
                     JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE
-                ),
-            ];
+                );
+            }
 
             $referrer = $_SERVER['HTTP_REFERER'] ?? '';
             if (
@@ -136,6 +150,26 @@ if (!function_exists('kh_matomo_track_redirect')) {
                 kh_matomo_record_diagnostics($diagnostics);
             }
         }
+    }
+}
+
+/** Observe a missing keyword without changing YOURLS' fallback redirect. */
+if (!function_exists('kh_matomo_handle_not_found_action')) {
+    function kh_matomo_handle_not_found_action($args)
+    {
+        if (!is_array($args) || !isset($args[0]) || !is_string($args[0])) {
+            return false;
+        }
+
+        // The loader may pass unsanitized input. Never include query strings,
+        // fragments, control characters, or arbitrarily long paths in analytics.
+        $keyword = preg_split('/[?#]/', $args[0], 2)[0];
+        $keyword = trim($keyword, '/');
+        if ($keyword === '' || strlen($keyword) > 200 || preg_match('/[\x00-\x20\x7F]/', $keyword)) {
+            return false;
+        }
+
+        return kh_matomo_track_event(null, $keyword, 'keyword_not_found');
     }
 }
 

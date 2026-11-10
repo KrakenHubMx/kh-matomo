@@ -379,3 +379,15 @@ msgstr "Sample history cleared. Cards are retained."
 #: includes/admin.php
 msgid "No se pudo borrar el historial de muestras."
 msgstr "Could not clear sample history."
+
+#: includes/admin.php
+msgid "Enlaces no encontrados"
+msgstr "Links not found"
+
+#: includes/admin.php
+msgid "Registrar enlaces no encontrados"
+msgstr "Track links not found"
+
+#: includes/admin.php
+msgid "Envía un evento a Matomo cuando alguien solicita un enlace corto que no existe. Requiere que el seguimiento esté habilitado y no cambia la redirección de YOURLS."
+msgstr "Sends an event to Matomo when someone requests a short link that does not exist. Requires tracking to be enabled and does not change the YOURLS redirect."

@@ -318,6 +318,25 @@ if (!function_exists('kh_matomo_render_tracking_section')) {
             </tr>
 
             <tr>
+                <th scope="row"><?php echo kh_matomo_escape(kh_matomo_t('Enlaces no encontrados')); ?></th>
+                <td>
+                    <label for="kh-matomo-track-not-found">
+                        <input
+                            type="checkbox"
+                            id="kh-matomo-track-not-found"
+                            name="track_not_found"
+                            value="1"
+                            aria-describedby="kh-matomo-not-found-help"
+                            <?php echo $settings['track_not_found'] ? 'checked' : ''; ?>>
+                        <?php echo kh_matomo_escape(kh_matomo_t('Registrar enlaces no encontrados')); ?>
+                    </label>
+                    <p class="description" id="kh-matomo-not-found-help">
+                        <?php echo kh_matomo_escape(kh_matomo_t('Envía un evento a Matomo cuando alguien solicita un enlace corto que no existe. Requiere que el seguimiento esté habilitado y no cambia la redirección de YOURLS.')); ?>
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
                 <th scope="row"><?php echo kh_matomo_escape(kh_matomo_t('Anonimizar IP')); ?></th>
                 <td>
                     <label>
@@ -512,6 +531,7 @@ if (!function_exists('kh_matomo_validate_settings_input')) {
         );
 
         $settings['tracking_enabled'] = isset($input['tracking_enabled']);
+        $settings['track_not_found'] = isset($input['track_not_found']);
         $settings['anonymize_ip'] = isset($input['anonymize_ip']);
 
         return [

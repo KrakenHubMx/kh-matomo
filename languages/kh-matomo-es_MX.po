@@ -386,3 +386,15 @@ msgstr "El historial de muestras se borró. Las tarjetas se conservan."
 #: includes/admin.php
 msgid "No se pudo borrar el historial de muestras."
 msgstr "No se pudo borrar el historial de muestras."
+
+#: includes/admin.php
+msgid "Enlaces no encontrados"
+msgstr "Enlaces no encontrados"
+
+#: includes/admin.php
+msgid "Registrar enlaces no encontrados"
+msgstr "Registrar enlaces no encontrados"
+
+#: includes/admin.php
+msgid "Envía un evento a Matomo cuando alguien solicita un enlace corto que no existe. Requiere que el seguimiento esté habilitado y no cambia la redirección de YOURLS."
+msgstr "Envía un evento a Matomo cuando alguien solicita un enlace corto que no existe. Requiere que el seguimiento esté habilitado y no cambia la redirección de YOURLS."
