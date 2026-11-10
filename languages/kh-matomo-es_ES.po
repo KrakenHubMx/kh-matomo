@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: KH-Matomo 1.0.0\n"
+"Project-Id-Version: KH-Matomo 1.1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/KrakenHubMx/kh-matomo/issues\n"
 "POT-Creation-Date: 2026-11-01 19:08-0600\n"
 "PO-Revision-Date: 2026-11-01 18:59-0600\n"
