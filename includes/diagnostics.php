@@ -4,8 +4,10 @@ if (!defined('YOURLS_ABSPATH')) {
     die();
 }
 
-/** Persist only safe transport metadata, at most once per minute per outcome.
- * Concurrent requests may still write together; this is not an atomic lock.
+/**
+ * Sample shared tracking outcomes at most once per 60 seconds per outcome
+ * for sequential requests. Concurrent requests may still write together;
+ * this sampling does not limit event delivery and uses no atomic lock.
  */
 if (!function_exists('kh_matomo_record_diagnostics')) {
     function kh_matomo_record_diagnostics($diagnostics)

@@ -30,6 +30,7 @@ require_once KH_MATOMO_DIR . '/includes/i18n.php';
 yourls_add_action('plugins_loaded', 'kh_matomo_load_textdomain');
 require_once KH_MATOMO_DIR . '/includes/matomo-api.php';
 require_once KH_MATOMO_DIR . '/includes/diagnostics.php';
+require_once KH_MATOMO_DIR . '/includes/not-found.php';
 require_once KH_MATOMO_DIR . '/includes/tracker.php';
 require_once KH_MATOMO_DIR . '/includes/update-check.php';
 require_once KH_MATOMO_DIR . '/includes/admin.php';

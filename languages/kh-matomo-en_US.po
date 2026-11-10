@@ -324,8 +324,8 @@ msgid "Muestra de respuestas del seguimiento: se guarda como máximo un éxito y
 msgstr "Sampled tracking responses: at most one success and one failure are saved per minute, except for concurrent requests. Intermediate results may be omitted. Connection tests are excluded."
 
 #: includes/admin.php
-msgid "Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas se muestran en UTC."
-msgstr "A successful response does not confirm that the event appears in Matomo reports. Dates are shown in UTC."
+msgid "Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas usan la zona horaria y el formato configurados en YOURLS."
+msgstr "A successful response does not confirm that the event appears in Matomo reports. Dates use the timezone and format configured in YOURLS."
 
 #: includes/admin.php
 msgid "Último éxito registrado"
@@ -357,8 +357,8 @@ msgid "Historial de muestras"
 msgstr "Sample history"
 
 #: includes/admin.php
-msgid "Fecha (UTC)"
-msgstr "Date (UTC)"
+msgid "Fecha"
+msgstr "Date"
 
 #: includes/admin.php
 msgid "Resultado"
@@ -391,3 +391,7 @@ msgstr "Track links not found"
 #: includes/admin.php
 msgid "Envía un evento a Matomo cuando alguien solicita un enlace corto que no existe. Requiere que el seguimiento esté habilitado y no cambia la redirección de YOURLS."
 msgstr "Sends an event to Matomo when someone requests a short link that does not exist. Requires tracking to be enabled and does not change the YOURLS redirect."
+
+#: includes/admin.php
+msgid "Solo se registran solicitudes GET con formato de keyword válido, hasta 30 intentos de envío por minuto para toda la instalación."
+msgstr "Only GET requests with a valid keyword format are tracked, with up to 30 delivery attempts per minute across the installation."

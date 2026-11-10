@@ -5,7 +5,7 @@ if (!defined('YOURLS_ABSPATH')) {
 }
 
 /**
- * Send an authenticated request to the Matomo API.
+ * Send an authenticated request to Matomo's Reporting API.
  *
  * @param array  $settings Matomo connection settings.
  * @param string $method   Matomo API method.
@@ -137,11 +137,12 @@ if (!function_exists('kh_matomo_api_request')) {
 /**
  * Send one best-effort event to Matomo's HTTP Tracking API.
  *
- * This transport has a short hard timeout because it runs before YOURLS sends
- * the redirect response. It deliberately does not retry or log request data.
+ * The cURL limits are 500 ms to connect and 1000 ms total because tracking runs
+ * before the redirect response. There are no retries or request-data logs.
  *
  * @param array $settings Matomo connection settings.
  * @param array $params   Tracking API parameters.
+ * @param array|null $diagnostics Output transport metadata, without request data.
  *
  * @return bool
  */
@@ -224,7 +225,8 @@ if (!function_exists('kh_matomo_send_tracking_request')) {
 }
 
 /**
- * Test Matomo connection and verify write access to the configured site.
+ * Check Reporting API connectivity and write or administrator permission.
+ * This does not send a tracking event or verify its appearance in reports.
  *
  * @param array $settings Matomo connection settings.
  *

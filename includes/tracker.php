@@ -39,6 +39,7 @@ if (!function_exists('kh_matomo_anonymize_ip')) {
  *
  * @param string $destination Original destination URL.
  * @param string $keyword     YOURLS short URL keyword.
+ * @param array|null $diagnostics Output transport or skip metadata.
  *
  * @return bool Whether Matomo returned a successful HTTP status.
  */
@@ -49,7 +50,18 @@ if (!function_exists('kh_matomo_track_redirect')) {
     }
 }
 
-/** Send a redirect or missing-keyword event using the same privacy and transport rules. */
+/**
+ * Send a redirect or missing-keyword event using shared privacy and transport.
+ * Only missing-keyword events require GET/keyword filtering and a reservation.
+ * Skipped events leave delivery diagnostics unchanged; eligible events share
+ * the sampled success/failure history regardless of their action.
+ *
+ * @param string|null $destination Original URL for redirects; null for misses.
+ * @param string $keyword Keyword, possibly unsanitized for a missing request.
+ * @param string $action Either redirect or keyword_not_found.
+ * @param array|null $diagnostics Output transport or skip metadata.
+ * @return bool Whether the tracking endpoint returned HTTP 2xx without a cURL error.
+ */
 if (!function_exists('kh_matomo_track_event')) {
     function kh_matomo_track_event($destination, $keyword, $action, &$diagnostics = null)
     {
@@ -79,6 +91,14 @@ if (!function_exists('kh_matomo_track_event')) {
             ) {
                 $diagnostics['reason'] = 'tracking_disabled_or_settings_invalid';
                 return false;
+            }
+
+            if ($action === 'keyword_not_found') {
+                $keyword = kh_matomo_get_not_found_keyword($keyword);
+                if ($keyword === '' || !kh_matomo_reserve_not_found_event()) {
+                    $diagnostics['reason'] = 'not_found_filtered';
+                    return false;
+                }
             }
 
             $record_result = true;
@@ -153,7 +173,10 @@ if (!function_exists('kh_matomo_track_event')) {
     }
 }
 
-/** Observe a missing keyword without changing YOURLS' fallback redirect. */
+/**
+ * Adapt YOURLS' packed missing-keyword arguments without changing the fallback.
+ * A resolution miss does not imply that the final HTTP response is a 404.
+ */
 if (!function_exists('kh_matomo_handle_not_found_action')) {
     function kh_matomo_handle_not_found_action($args)
     {
@@ -161,15 +184,7 @@ if (!function_exists('kh_matomo_handle_not_found_action')) {
             return false;
         }
 
-        // The loader may pass unsanitized input. Never include query strings,
-        // fragments, control characters, or arbitrarily long paths in analytics.
-        $keyword = preg_split('/[?#]/', $args[0], 2)[0];
-        $keyword = trim($keyword, '/');
-        if ($keyword === '' || strlen($keyword) > 200 || preg_match('/[\x00-\x20\x7F]/', $keyword)) {
-            return false;
-        }
-
-        return kh_matomo_track_event(null, $keyword, 'keyword_not_found');
+        return kh_matomo_track_event(null, $args[0], 'keyword_not_found');
     }
 }
 

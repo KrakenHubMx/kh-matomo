@@ -18,6 +18,17 @@ if (!function_exists('kh_matomo_escape')) {
     }
 }
 
+/** Format a stored Unix timestamp using YOURLS' timezone and locale filters. */
+if (!function_exists('kh_matomo_format_timestamp')) {
+    function kh_matomo_format_timestamp($timestamp)
+    {
+        return yourls_date_i18n(
+            yourls_get_datetime_format('Y-m-d H:i:s'),
+            yourls_get_timestamp((int) $timestamp)
+        );
+    }
+}
+
 /**
  * Register the plugin administration page.
  */
@@ -332,6 +343,7 @@ if (!function_exists('kh_matomo_render_tracking_section')) {
                     </label>
                     <p class="description" id="kh-matomo-not-found-help">
                         <?php echo kh_matomo_escape(kh_matomo_t('Envía un evento a Matomo cuando alguien solicita un enlace corto que no existe. Requiere que el seguimiento esté habilitado y no cambia la redirección de YOURLS.')); ?>
+                        <?php echo kh_matomo_escape(kh_matomo_t('Solo se registran solicitudes GET con formato de keyword válido, hasta 30 intentos de envío por minuto para toda la instalación.')); ?>
                     </p>
                 </td>
             </tr>
@@ -430,7 +442,7 @@ if (!function_exists('kh_matomo_render_diagnostics_section')) {
         ?>
         <h3><?php echo kh_matomo_escape(kh_matomo_t('Diagnóstico de envíos')); ?></h3>
         <p><?php echo kh_matomo_escape(kh_matomo_t('Muestra de respuestas del seguimiento: se guarda como máximo un éxito y un fallo por minuto, salvo solicitudes concurrentes. Puede omitir resultados intermedios. La prueba de conexión no se incluye.')); ?></p>
-        <p><?php echo kh_matomo_escape(kh_matomo_t('Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas se muestran en UTC.')); ?></p>
+        <p><?php echo kh_matomo_escape(kh_matomo_t('Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas usan la zona horaria y el formato configurados en YOURLS.')); ?></p>
         <div class="kh-matomo-diagnostics">
         <?php foreach ([
             'success' => kh_matomo_t('Último éxito registrado'),
@@ -450,7 +462,7 @@ if (!function_exists('kh_matomo_render_diagnostics_section')) {
                 <?php else : ?>
                     <strong><?php echo kh_matomo_escape($reason); ?></strong>
                     <time datetime="<?php echo kh_matomo_escape(gmdate('Y-m-d\TH:i:s\Z', (int) $entry['recorded_at'])); ?>">
-                        <?php echo kh_matomo_escape(gmdate('Y-m-d H:i:s', (int) $entry['recorded_at']) . ' UTC'); ?>
+                        <?php echo kh_matomo_escape(kh_matomo_format_timestamp($entry['recorded_at'])); ?>
                     </time>
                     <dl>
                         <div><dt>HTTP</dt><dd><?php echo (int) ($entry['http_code'] ?? 0); ?></dd></div>
@@ -471,7 +483,7 @@ if (!function_exists('kh_matomo_render_diagnostics_section')) {
             <table class="kh-matomo-history">
                 <caption class="description"><?php echo kh_matomo_escape(kh_matomo_t('Historial de muestras')); ?></caption>
                 <thead><tr>
-                    <th scope="col"><?php echo kh_matomo_escape(kh_matomo_t('Fecha (UTC)')); ?></th>
+                    <th scope="col"><?php echo kh_matomo_escape(kh_matomo_t('Fecha')); ?></th>
                     <th scope="col"><?php echo kh_matomo_escape(kh_matomo_t('Resultado')); ?></th>
                     <th scope="col">HTTP</th><th scope="col">cURL</th>
                     <th scope="col"><?php echo kh_matomo_escape(kh_matomo_t('Duración')); ?></th>
@@ -484,7 +496,7 @@ if (!function_exists('kh_matomo_render_diagnostics_section')) {
                     }
                     ?>
                     <tr>
-                        <td><?php echo kh_matomo_escape(gmdate('Y-m-d H:i:s', (int) $entry['recorded_at'])); ?></td>
+                        <td><?php echo kh_matomo_escape(kh_matomo_format_timestamp($entry['recorded_at'])); ?></td>
                         <td><?php echo kh_matomo_escape($reason); ?></td>
                         <td><?php echo (int) ($entry['http_code'] ?? 0); ?></td>
                         <td><?php echo (int) ($entry['curl_errno'] ?? 0); ?></td>

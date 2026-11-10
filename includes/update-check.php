@@ -4,14 +4,13 @@
  *
  * Checks the latest published stable release and caches the result in YOURLS
  * options. Call this from the admin area only, not from public redirect requests.
- *
- * @return array Update status for the admin UI.
  */
 
 if (!defined('YOURLS_ABSPATH')) {
     die();
 }
 
+/** @return array Cached or freshly checked update status for the admin UI. */
 if (!function_exists('kh_matomo_get_update_status')) {
     function kh_matomo_get_update_status()
     {
@@ -75,7 +74,7 @@ if (!function_exists('kh_matomo_get_update_status')) {
             $http_status = (int) $response->status_code;
 
             if ($http_status === 404) {
-                // GitHub returns 404 when no published stable release exists.
+                // Treat 404 as no published stable release for this repository.
                 $result['status'] = 'no_release';
                 $result['latest_version'] = '';
                 $result['latest_tag'] = '';

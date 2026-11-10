@@ -199,8 +199,11 @@ The admin page displays one recorded success and one recorded failure from
 redirect tracking. Each outcome is persisted separately, no more than once per
 minute for sequential requests (concurrent writes are possible). Samples may
 omit intermediate results and must not be presented as exact availability or
-last-attempt statistics. UTC timestamps, controlled reason identifiers, HTTP
+last-attempt statistics. Unix timestamps, controlled reason identifiers, HTTP
 status, cURL error numbers, and durations are the only persisted metadata.
+Display dates through YOURLS timezone, datetime-format, and localization helpers
+so the Timezones plugin is respected. Keep stored timestamps, ordering, cache
+ages, and rate-limit windows independent of display timezone changes.
 Connection checks and disabled tracking do not update the samples. Storage
 failures must not change tracking results or prevent redirects. HTTP success
 does not guarantee event visibility in reports. Samples survive configuration
@@ -215,3 +218,27 @@ Concurrent requests can overwrite samples; this is not an audit log. Existing
 card-only data remains compatible; history begins with the next sampled write.
 The nonce-protected clear action removes history while retaining cards and
 sampling timestamps. Samples may reappear as new clicks are tracked.
+
+## 12. Optional missing-keyword events
+
+The `track_not_found` setting is off by default and requires global tracking to
+be enabled. The `redirect_keyword_not_found` action can submit a `YOURLS` event
+with action `keyword_not_found` and the missing keyword as its name. No
+destination custom variable is sent. This observes a resolution miss, not an
+HTTP 404, and must not change YOURLS' fallback redirect or Redirect Index.
+
+Only GET requests with a nonempty, single-segment keyword are eligible. Query
+strings and fragments are excluded from the requested keyword. Reject controls,
+whitespace, slash/backslash paths, and candidates changed by
+`yourls_sanitize_keyword($keyword, true)`, including its filtered character rules
+and length limit. Do not reject randomness or use a file-extension blacklist.
+
+Reserve at most 30 attempts per fixed UTC minute for the entire installation,
+including unsuccessful deliveries. Consecutive minute boundaries can allow a
+burst across two windows. A single bounded option stores only the window and
+count. A non-blocking MySQL/MariaDB advisory lock protects counter updates
+across workers sharing the database; it is released before contacting Matomo.
+Contention or storage failure skips the optional event. No per-IP or per-keyword
+state is stored. Filtered and limited requests do not update delivery diagnostics.
+Actual attempts share the existing diagnostics. Valid redirect events bypass
+these filters and the limiter.

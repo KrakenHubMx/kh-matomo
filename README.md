@@ -97,8 +97,8 @@ analytics.
 ## Delivery diagnostics
 
 The settings page shows the last recorded successful response and failure from
-redirect tracking, with UTC timestamps, HTTP status, cURL error number, and
-request duration. Connection tests do not update these diagnostics. HTTP 2xx
+redirect tracking, with timestamps displayed using the YOURLS timezone and
+date format, HTTP status, cURL error number, and request duration. Connection tests do not update these diagnostics. HTTP 2xx
 confirms an endpoint response, not that an event appears in Matomo reports.
 
 Two bounded YOURLS options are stored, one per outcome. Each is updated
