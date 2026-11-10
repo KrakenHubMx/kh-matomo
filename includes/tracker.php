@@ -39,11 +39,31 @@ if (!function_exists('kh_matomo_anonymize_ip')) {
  *
  * @param string $destination Original destination URL.
  * @param string $keyword     YOURLS short URL keyword.
+ * @param array|null $diagnostics Output transport or skip metadata.
  *
  * @return bool Whether Matomo returned a successful HTTP status.
  */
 if (!function_exists('kh_matomo_track_redirect')) {
     function kh_matomo_track_redirect($destination, $keyword, &$diagnostics = null)
+    {
+        return kh_matomo_track_event($destination, $keyword, 'redirect', $diagnostics);
+    }
+}
+
+/**
+ * Send a redirect or missing-keyword event using shared privacy and transport.
+ * Only missing-keyword events require GET/keyword filtering and a reservation.
+ * Skipped events leave delivery diagnostics unchanged; eligible events share
+ * the sampled success/failure history regardless of their action.
+ *
+ * @param string|null $destination Original URL for redirects; null for misses.
+ * @param string $keyword Keyword, possibly unsanitized for a missing request.
+ * @param string $action Either redirect or keyword_not_found.
+ * @param array|null $diagnostics Output transport or skip metadata.
+ * @return bool Whether the tracking endpoint returned HTTP 2xx without a cURL error.
+ */
+if (!function_exists('kh_matomo_track_event')) {
+    function kh_matomo_track_event($destination, $keyword, $action, &$diagnostics = null)
     {
         $diagnostics = [
             'reason' => 'not_attempted',
@@ -59,15 +79,26 @@ if (!function_exists('kh_matomo_track_redirect')) {
 
             if (
                 empty($settings['tracking_enabled'])
+                || !in_array($action, ['redirect', 'keyword_not_found'], true)
+                || ($action === 'keyword_not_found' && empty($settings['track_not_found']))
                 || empty($settings['matomo_url'])
                 || empty($settings['auth_token'])
-                || !is_string($destination)
+                || ($action === 'redirect' && !is_string($destination))
                 || !is_string($keyword)
                 || trim($keyword) === ''
                 || !ctype_digit((string) $settings['site_id'])
+                || (int) $settings['site_id'] < 1
             ) {
                 $diagnostics['reason'] = 'tracking_disabled_or_settings_invalid';
                 return false;
+            }
+
+            if ($action === 'keyword_not_found') {
+                $keyword = kh_matomo_get_not_found_keyword($keyword);
+                if ($keyword === '' || !kh_matomo_reserve_not_found_event()) {
+                    $diagnostics['reason'] = 'not_found_filtered';
+                    return false;
+                }
             }
 
             $record_result = true;
@@ -82,15 +113,18 @@ if (!function_exists('kh_matomo_track_redirect')) {
                 'rand'        => random_int(0, PHP_INT_MAX),
                 'url'         => $short_url,
                 'e_c'         => 'YOURLS',
-                'e_a'         => 'redirect',
+                'e_a'         => $action,
                 'e_n'         => $keyword,
                 'ca'          => 1,
                 'send_image'  => 0,
-                'cvar'        => json_encode(
+            ];
+
+            if ($action === 'redirect') {
+                $params['cvar'] = json_encode(
                     [1 => ['YOURLS destination', $destination]],
                     JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE
-                ),
-            ];
+                );
+            }
 
             $referrer = $_SERVER['HTTP_REFERER'] ?? '';
             if (
@@ -136,6 +170,21 @@ if (!function_exists('kh_matomo_track_redirect')) {
                 kh_matomo_record_diagnostics($diagnostics);
             }
         }
+    }
+}
+
+/**
+ * Adapt YOURLS' packed missing-keyword arguments without changing the fallback.
+ * A resolution miss does not imply that the final HTTP response is a 404.
+ */
+if (!function_exists('kh_matomo_handle_not_found_action')) {
+    function kh_matomo_handle_not_found_action($args)
+    {
+        if (!is_array($args) || !isset($args[0]) || !is_string($args[0])) {
+            return false;
+        }
+
+        return kh_matomo_track_event(null, $args[0], 'keyword_not_found');
     }
 }
 

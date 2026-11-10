@@ -30,6 +30,7 @@ require_once KH_MATOMO_DIR . '/includes/i18n.php';
 yourls_add_action('plugins_loaded', 'kh_matomo_load_textdomain');
 require_once KH_MATOMO_DIR . '/includes/matomo-api.php';
 require_once KH_MATOMO_DIR . '/includes/diagnostics.php';
+require_once KH_MATOMO_DIR . '/includes/not-found.php';
 require_once KH_MATOMO_DIR . '/includes/tracker.php';
 require_once KH_MATOMO_DIR . '/includes/update-check.php';
 require_once KH_MATOMO_DIR . '/includes/admin.php';
@@ -37,6 +38,13 @@ require_once KH_MATOMO_DIR . '/includes/admin.php';
 yourls_add_action(
     'redirect_shorturl',
     'kh_matomo_handle_redirect_action',
+    10,
+    1
+);
+
+yourls_add_action(
+    'redirect_keyword_not_found',
+    'kh_matomo_handle_not_found_action',
     10,
     1
 );

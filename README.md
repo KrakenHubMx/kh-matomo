@@ -44,6 +44,12 @@ You can use **Test connection** to check your settings before saving. Leave the
 token field blank to keep the saved token, or enter a new one to replace it.
 The connection test accepts both site write and administrator permissions.
 
+Use a dedicated Matomo user with write access only to the selected site.
+Administrator access is accepted but is not required. The token is masked in
+the panel but stored unencrypted in the YOURLS database; protect database access
+and backups. The Matomo base URL must use HTTPS; both transports also refuse non-HTTPS
+URLs even if settings were edited directly in the database.
+
 Turn on **Enable tracking** and save your settings to start sending redirect
 events to Matomo. IP anonymization is on by default: IPv4 addresses are masked
 to `/24` and IPv6 addresses to `/64` before they are sent. Turning it off sends
@@ -82,9 +88,20 @@ request has a 500 ms connection timeout and a 1 second total timeout. A slow or
 unavailable Matomo service can add up to that bounded wait, but tracking errors
 do not prevent the redirect. Delivery is best effort and is not guaranteed.
 
-The destination URL is included in Matomo as a custom variable. Avoid tracking
-links whose query strings contain information that should not be stored in
-analytics.
+The full destination URL is included in Matomo as the action custom variable
+`YOURLS destination`, as in v1.0.0. It may contain sensitive paths or signed
+parameters; consider this when choosing links to track. This requires Matomo's
+CustomVariables plugin, and values may be truncated to its 200-character limit.
+Sending the field does not guarantee it is stored or displayed in reports.
+
+Optional missing-keyword tracking is limited to 30 delivery attempts per minute
+across the installation. It is a capped selection, not a complete count of
+missing links. Automated requests with valid-looking keywords can consume the
+quota even if Matomo later excludes them. The plugin does not currently filter
+known bot User-Agents or keep a count of skipped events. Diagnostics show when
+the latest recorded quota window reached its limit, using the existing counter
+without additional writes for excess requests. This indicates saturation, not
+how many events were skipped; lock contention and storage errors are not counted.
 
 ## Code layout
 
@@ -97,8 +114,8 @@ analytics.
 ## Delivery diagnostics
 
 The settings page shows the last recorded successful response and failure from
-redirect tracking, with UTC timestamps, HTTP status, cURL error number, and
-request duration. Connection tests do not update these diagnostics. HTTP 2xx
+redirect tracking, with timestamps displayed using the YOURLS timezone and
+date format, HTTP status, cURL error number, and request duration. Connection tests do not update these diagnostics. HTTP 2xx
 confirms an endpoint response, not that an event appears in Matomo reports.
 
 Two bounded YOURLS options are stored, one per outcome. Each is updated

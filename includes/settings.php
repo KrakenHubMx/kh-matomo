@@ -11,6 +11,7 @@ if ( !function_exists( 'kh_matomo_default_settings' ) ) {
             'site_id'          => '',
             'auth_token'       => '',
             'tracking_enabled' => false,
+            'track_not_found'  => false,
             'anonymize_ip'     => true,
         ];
     }
@@ -42,6 +43,7 @@ if ( !function_exists( 'kh_matomo_get_settings' ) ) {
             : '';
 
         $settings['tracking_enabled'] = (bool) $settings['tracking_enabled'];
+        $settings['track_not_found'] = (bool) $settings['track_not_found'];
         $settings['anonymize_ip'] = (bool) $settings['anonymize_ip'];
 
         return $settings;
@@ -71,6 +73,7 @@ if ( !function_exists( 'kh_matomo_save_settings' ) ) {
             : $current['auth_token'];
 
         $settings['tracking_enabled'] = (bool) $settings['tracking_enabled'];
+        $settings['track_not_found'] = (bool) $settings['track_not_found'];
         $settings['anonymize_ip'] = (bool) $settings['anonymize_ip'];
 
         yourls_update_option( 'kh_matomo_settings', $settings );

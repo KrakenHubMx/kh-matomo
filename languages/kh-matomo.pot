@@ -314,7 +314,7 @@ msgid "Muestra de respuestas del seguimiento: se guarda como máximo un éxito y
 msgstr ""
 
 #: includes/admin.php
-msgid "Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas se muestran en UTC."
+msgid "Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas usan la zona horaria y el formato configurados en YOURLS."
 msgstr ""
 
 #: includes/admin.php
@@ -347,7 +347,7 @@ msgid "Historial de muestras"
 msgstr ""
 
 #: includes/admin.php
-msgid "Fecha (UTC)"
+msgid "Fecha"
 msgstr ""
 
 #: includes/admin.php
@@ -368,4 +368,28 @@ msgstr ""
 
 #: includes/admin.php
 msgid "No se pudo borrar el historial de muestras."
+msgstr ""
+
+#: includes/admin.php
+msgid "Enlaces no encontrados"
+msgstr ""
+
+#: includes/admin.php
+msgid "Registrar enlaces no encontrados"
+msgstr ""
+
+#: includes/admin.php
+msgid "Envía un evento a Matomo cuando alguien solicita un enlace corto que no existe. Requiere que el seguimiento esté habilitado y no cambia la redirección de YOURLS."
+msgstr ""
+
+#: includes/admin.php
+msgid "Solo se registran solicitudes GET con formato de keyword válido, hasta 30 intentos de envío por minuto para toda la instalación."
+msgstr ""
+
+#: includes/matomo-api.php includes/admin.php
+msgid "La conexión con Matomo requiere HTTPS."
+msgstr ""
+
+#: includes/matomo-api.php includes/admin.php
+msgid "Se alcanzó la cuota de enlaces no encontrados en el último minuto registrado. Los intentos adicionales de esa ventana se omiten; no se guarda un conteo de descartes."
 msgstr ""
