@@ -22,6 +22,7 @@ function kh_matomo_check($condition, $message) {
     if (!$condition) { throw new RuntimeException($message); }
 }
 require __DIR__ . '/../includes/diagnostics.php';
+require __DIR__ . '/../includes/not-found.php';
 require __DIR__ . '/../includes/admin.php';
 
 kh_matomo_check(kh_matomo_format_timestamp($timestamp) === '2026-11-09 12:00:00', 'Default UTC display');

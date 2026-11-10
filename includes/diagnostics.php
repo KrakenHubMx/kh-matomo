@@ -15,7 +15,7 @@ if (!function_exists('kh_matomo_record_diagnostics')) {
         try {
             $reason = $diagnostics['reason'] ?? '';
             $allowed = ['ok', 'curl_error', 'http_error', 'curl_unavailable',
-                'curl_init_failed', 'settings_missing', 'exception'];
+                'curl_init_failed', 'settings_missing', 'https_required', 'exception'];
             if (!in_array($reason, $allowed, true)) {
                 return;
             }

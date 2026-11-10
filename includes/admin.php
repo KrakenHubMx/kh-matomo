@@ -438,9 +438,13 @@ if (!function_exists('kh_matomo_render_diagnostics_section')) {
             'curl_init_failed' => kh_matomo_t('No se pudo iniciar cURL'),
             'settings_missing' => kh_matomo_t('Configuración incompleta'),
             'exception' => kh_matomo_t('Error interno'),
+            'https_required' => kh_matomo_t('La conexión con Matomo requiere HTTPS.'),
         ];
         ?>
         <h3><?php echo kh_matomo_escape(kh_matomo_t('Diagnóstico de envíos')); ?></h3>
+        <?php if (kh_matomo_not_found_quota_reached()) : ?>
+            <p class="description"><?php echo kh_matomo_escape(kh_matomo_t('Se alcanzó la cuota de enlaces no encontrados en el último minuto registrado. Los intentos adicionales de esa ventana se omiten; no se guarda un conteo de descartes.')); ?></p>
+        <?php endif; ?>
         <p><?php echo kh_matomo_escape(kh_matomo_t('Muestra de respuestas del seguimiento: se guarda como máximo un éxito y un fallo por minuto, salvo solicitudes concurrentes. Puede omitir resultados intermedios. La prueba de conexión no se incluye.')); ?></p>
         <p><?php echo kh_matomo_escape(kh_matomo_t('Una respuesta exitosa no confirma que el evento aparezca en los informes de Matomo. Las fechas usan la zona horaria y el formato configurados en YOURLS.')); ?></p>
         <div class="kh-matomo-diagnostics">

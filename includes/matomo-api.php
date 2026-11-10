@@ -40,6 +40,14 @@ if (!function_exists('kh_matomo_api_request')) {
             ];
         }
 
+        if (strtolower((string) parse_url($base_url, PHP_URL_SCHEME)) !== 'https') {
+            return [
+                'success' => false,
+                'message' => kh_matomo_t('La conexión con Matomo requiere HTTPS.'),
+                'data' => null,
+            ];
+        }
+
         $endpoint = $base_url . '/index.php';
 
         $request_data = array_merge(
@@ -169,6 +177,11 @@ if (!function_exists('kh_matomo_send_tracking_request')) {
 
         if ($base_url === '' || $token === '') {
             $diagnostics['reason'] = 'settings_missing';
+            return false;
+        }
+
+        if (strtolower((string) parse_url($base_url, PHP_URL_SCHEME)) !== 'https') {
+            $diagnostics['reason'] = 'https_required';
             return false;
         }
 

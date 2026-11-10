@@ -385,3 +385,11 @@ msgstr ""
 #: includes/admin.php
 msgid "Solo se registran solicitudes GET con formato de keyword válido, hasta 30 intentos de envío por minuto para toda la instalación."
 msgstr ""
+
+#: includes/matomo-api.php includes/admin.php
+msgid "La conexión con Matomo requiere HTTPS."
+msgstr ""
+
+#: includes/matomo-api.php includes/admin.php
+msgid "Se alcanzó la cuota de enlaces no encontrados en el último minuto registrado. Los intentos adicionales de esa ventana se omiten; no se guarda un conteo de descartes."
+msgstr ""

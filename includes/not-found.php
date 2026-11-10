@@ -4,9 +4,24 @@ if (!defined('YOURLS_ABSPATH')) {
     die();
 }
 
+/** Read the latest quota window for the panel; never write on excess requests. */
+if (!function_exists('kh_matomo_not_found_quota_reached')) {
+    function kh_matomo_not_found_quota_reached()
+    {
+        $value = yourls_get_option('kh_matomo_not_found_limit');
+        if (!is_string($value)) {
+            return false;
+        }
+        $parts = explode(':', $value, 2);
+        return count($parts) === 2 && ctype_digit($parts[0])
+            && ctype_digit($parts[1]) && (int) $parts[1] >= 30;
+    }
+}
+
 /**
  * Return a GET request's single-segment keyword, or '' when filtered out.
- * Strip query/fragment data and respect YOURLS' filtered charset and length.
+ * Strip query/fragment data and enforce the 100-byte storage limit plus
+ * YOURLS' filtered character rules. Longer candidates are rejected, not cut.
  */
 if (!function_exists('kh_matomo_get_not_found_keyword')) {
     function kh_matomo_get_not_found_keyword($input)
@@ -23,6 +38,7 @@ if (!function_exists('kh_matomo_get_not_found_keyword')) {
         }
         if (
             $keyword === ''
+            || strlen($keyword) > 100
             || strpbrk($keyword, '/\\') !== false
             || preg_match('/[\x00-\x20\x7F]/', $keyword)
         ) {

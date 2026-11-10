@@ -100,6 +100,7 @@ kh_matomo_save_settings(['track_not_found' => false]);
 kh_matomo_check(kh_matomo_handle_redirect_action(['https://destination.invalid/path', 'valid']), 'Valid redirects still tracked');
 $event = end($requests);
 kh_matomo_check($event['e_a'] === 'redirect' && $event['e_n'] === 'valid' && isset($event['cvar']), 'Redirect payload preserved');
+kh_matomo_check(json_decode($event['cvar'], true)[1][1] === 'https://destination.invalid/path', 'Full destination preserved as before');
 $input = ['matomo_url' => 'https://analytics.invalid', 'site_id' => '1', 'tracking_enabled' => '1'];
 $result = kh_matomo_validate_settings_input($input, kh_matomo_get_settings());
 kh_matomo_save_settings($result['settings']);
@@ -120,8 +121,8 @@ kh_matomo_check($callback(['custom-key_1/']), 'Custom keyword and optional trail
 kh_matomo_check(!$callback(['archivo.php']), 'Unsupported character rejected');
 $keyword_characters .= '.';
 kh_matomo_check($callback(['archivo.php']), 'Custom charset respected without extension blacklist');
-kh_matomo_check($callback([str_repeat('x', 199)]), 'Core maximum length accepted');
-kh_matomo_check(!$callback([str_repeat('x', 200)]), 'Core truncation does not invent a different keyword');
+kh_matomo_check($callback([str_repeat('x', 100)]), '100-byte keyword accepted');
+kh_matomo_check(!$callback([str_repeat('x', 101)]), 'Overlong keyword rejected without truncation');
 
 unset($options['kh_matomo_not_found_limit']);
 for ($i = 0; $i < 30; $i++) {
@@ -133,11 +134,14 @@ kh_matomo_check(kh_matomo_reserve_not_found_event(12060), 'Next minute resets ca
 kh_matomo_check(!kh_matomo_reserve_not_found_event(12000), 'Clock rollback cannot reopen window');
 
 $options['kh_matomo_not_found_limit'] = intdiv(time(), 60) . ':30';
+kh_matomo_check(kh_matomo_not_found_quota_reached(), 'Panel can identify exhausted latest window');
 $before_requests = count($requests);
+$before_quota = $options['kh_matomo_not_found_limit'];
 $before_diagnostics = array_intersect_key($options, array_flip(['kh_matomo_diagnostics_success', 'kh_matomo_diagnostics_failure']));
 kh_matomo_check(!$callback(['missing']), 'Saturated limiter skips transport');
 kh_matomo_check(!$callback(['assets/logo.png']), 'Filtered paths skip transport');
 kh_matomo_check(count($requests) === $before_requests, 'No sends for skipped requests');
+kh_matomo_check($options['kh_matomo_not_found_limit'] === $before_quota, 'No counter writes on excess requests');
 kh_matomo_check(array_intersect_key($options, $before_diagnostics) === $before_diagnostics, 'Skips leave diagnostics unchanged');
 kh_matomo_check(kh_matomo_handle_redirect_action(['https://destination.invalid', 'valid']), 'Limiter does not affect valid redirects');
 $db->busy = true;

@@ -131,15 +131,18 @@ visitor IP addresses.
   before they are sent to Matomo.
 - When anonymization is disabled, the full client IP may be sent to Matomo.
 - Use YOURLS' client IP helper so configured trusted proxies are respected.
-- The original destination URL is included in Matomo as an action custom
-  variable; destination query strings may contain sensitive data and should be
-  considered when choosing links to track.
+- The full original destination URL is included as the action custom variable
+  `YOURLS destination`, preserving v1.0.0 behavior. Paths and query strings may
+  contain sensitive information. Matomo requires CustomVariables to process it
+  and may truncate values to 200 characters. There is no destination-mode
+  setting or custom-dimension integration in this release.
 - Server-side tracking does not share browser cookies and may reduce visitor
   uniqueness accuracy.
 
 ## 7. Transport and failure behavior
 
-- Use PHP cURL with TLS verification enabled.
+- Use PHP cURL with TLS verification enabled. Both API transports must reject
+  non-HTTPS base URLs before initializing an authenticated request.
 - Tracking is synchronous before YOURLS emits the redirect response.
 - The current transport has a 500 ms connection timeout and 1 second total
   timeout. This is a bound, not a delivery guarantee; a slow Matomo response can
@@ -227,7 +230,9 @@ with action `keyword_not_found` and the missing keyword as its name. No
 destination custom variable is sent. This observes a resolution miss, not an
 HTTP 404, and must not change YOURLS' fallback redirect or Redirect Index.
 
-Only GET requests with a nonempty, single-segment keyword are eligible. Query
+Only GET requests with a nonempty, single-segment keyword of at most 100 bytes
+are eligible. This byte limit is conservative for custom Unicode keywords;
+YOURLS' `varchar(100)` storage limit counts characters. Query
 strings and fragments are excluded from the requested keyword. Reject controls,
 whitespace, slash/backslash paths, and candidates changed by
 `yourls_sanitize_keyword($keyword, true)`, including its filtered character rules
@@ -242,3 +247,8 @@ Contention or storage failure skips the optional event. No per-IP or per-keyword
 state is stored. Filtered and limited requests do not update delivery diagnostics.
 Actual attempts share the existing diagnostics. Valid redirect events bypass
 these filters and the limiter.
+
+The admin diagnostics can show that the latest recorded quota window reached
+30 reservations, reading the existing option only. This is a saturation
+indicator, not an exact dropped-event count. Excess requests perform no counter
+writes, and contention/storage skips are not included in that indicator.

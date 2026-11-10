@@ -395,3 +395,11 @@ msgstr "Sends an event to Matomo when someone requests a short link that does no
 #: includes/admin.php
 msgid "Solo se registran solicitudes GET con formato de keyword válido, hasta 30 intentos de envío por minuto para toda la instalación."
 msgstr "Only GET requests with a valid keyword format are tracked, with up to 30 delivery attempts per minute across the installation."
+
+#: includes/matomo-api.php includes/admin.php
+msgid "La conexión con Matomo requiere HTTPS."
+msgstr "Connecting to Matomo requires HTTPS."
+
+#: includes/matomo-api.php includes/admin.php
+msgid "Se alcanzó la cuota de enlaces no encontrados en el último minuto registrado. Los intentos adicionales de esa ventana se omiten; no se guarda un conteo de descartes."
+msgstr "The missing-link quota was reached in the last recorded minute. Additional attempts in that window are skipped; no count of discarded requests is stored."
