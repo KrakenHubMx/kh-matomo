@@ -1,143 +1,141 @@
 # KH Matomo for YOURLS
 
-KH Matomo sends server-side click events from YOURLS to Matomo. It uses the
-YOURLS redirect hook and Matomo's HTTP Tracking API; no JavaScript is needed on
-the destination website.
+[![Listed in Awesome YOURLS!](https://img.shields.io/badge/Awesome-YOURLS-C5A3BE)](https://github.com/YOURLS/awesome-yourls/)
+
+KH Matomo records clicks on YOURLS short links as Matomo events. Tracking runs
+on your server, so you do not need JavaScript on the destination website.
+You can also track requests for short links that do not exist.
 
 ## Features
 
-- Tracks valid short-link redirects as Matomo events.
-- Stores configuration in YOURLS and keeps the saved token masked.
-- Lets administrators test the Matomo connection separately from saving.
-- Preserves the existing token when the token field is left blank; entering a
-  new token replaces it.
-- Anonymizes visitor IP addresses by default before sending them to Matomo.
-- Keeps redirects working even when Matomo is unavailable.
+- Records successful short-link redirects and optionally missing keywords.
+- Tests the Matomo connection without changing saved settings.
+- Anonymizes visitor IP addresses by default.
+- Shows sampled delivery results and a short history of successes and failures.
+- Uses YOURLS date and timezone settings, including the Timezones plugin.
+- Keeps redirects working when Matomo is unavailable.
 
 ## Requirements
 
-- YOURLS 1.10.x (development environment: YOURLS 1.10.6).
-- PHP 8.1 or newer with the cURL extension.
-- Matomo Cloud or Matomo 5/6 self-hosted.
+- YOURLS 1.10.x; the development reference is YOURLS 1.10.6.
+- PHP 8.1 or newer with cURL.
+- Matomo Cloud or Matomo 5/6 self-hosted, accessible over HTTPS.
 - A Matomo token with write or administrator permission for the selected site.
+
+Use a dedicated Matomo user with write access only to that site. Administrator
+permission is accepted but is not required. Matomo's CustomVariables plugin is
+needed only to process the additional destination metadata, not the events.
 
 ## Install
 
-1. Copy the plugin directory into `user/plugins/kh-matomo/` so `plugin.php` is
-   at the plugin directory root.
-2. Activate **KH Matomo Tracker** in the YOURLS Plugins page.
-3. Open **Matomo Tracker** from the YOURLS Plugins page.
+1. Copy the plugin into `user/plugins/kh-matomo/`, with `plugin.php` at the
+   plugin directory root.
+2. Activate **KH Matomo Tracker** on the YOURLS Plugins page.
+3. Open **Matomo Tracker** to configure it.
 
 ## Configure
 
-Enter the Matomo base URL, Site ID, and authentication token. The base URL is
-the Matomo domain, optionally followed by its installation directory. Do not
-append `/matomo.php` or `/index.php`; the plugin adds the correct endpoint.
+See the [configuration guide](docs/plugin-configuration.md) for setup instructions and
+details on each setting.
 
-Examples:
+## Events in Matomo
 
-- `https://analytics.example.com`
-- `https://example.com/matomo/`
-- `https://example.matomo.cloud/`
+Both event types use category `YOURLS`:
 
-You can use **Test connection** to check your settings before saving. Leave the
-token field blank to keep the saved token, or enter a new one to replace it.
-The connection test accepts both site write and administrator permissions.
+| Request | Event action | Event name | Action URL | Destination metadata |
+|---|---|---|---|---|
+| Existing short link | `redirect` | Keyword | Short URL visited | Full original destination in `YOURLS destination` |
+| Eligible missing keyword | `keyword_not_found` | Missing keyword | Short URL formed from the keyword | None |
 
-Use a dedicated Matomo user with write access only to the selected site.
-Administrator access is accepted but is not required. The token is masked in
-the panel but stored unencrypted in the YOURLS database; protect database access
-and backups. The Matomo base URL must use HTTPS; both transports also refuse non-HTTPS
-URLs even if settings were edited directly in the database.
+Both can include a valid HTTP(S) referrer, the visitor's User-Agent, and an IP
+address masked according to your settings. Referrer query strings are not
+removed by the missing-keyword filter.
 
-Turn on **Enable tracking** and save your settings to start sending redirect
-events to Matomo. IP anonymization is on by default: IPv4 addresses are masked
-to `/24` and IPv6 addresses to `/64` before they are sent. Turning it off sends
-the visitor's full IP address to Matomo.
+To check a new event, select the configured site and current date in Matomo,
+then open **Visitors → Visits Log / Live**. Visit a valid short link and look
+for `YOURLS / redirect` with its keyword. To check missing-keyword tracking,
+request an unused keyword after enabling both tracking options. Standard
+reports may appear later through Matomo archiving.
 
-![KH Matomo configuration screen](docs/kh-matomo-config-screen.png)
+The action URL uses your configured YOURLS address. Local development visits
+therefore show URLs such as `http://localhost:8080/abc`; production visits use
+the public short-link domain. Several actions can appear within one visit;
+server-side tracking does not share browser cookies and visitor identification
+may be less precise.
 
-![YOURLS redirect event in Matomo](docs/kh-matomo-visit-screen.png)
+### Destination metadata
 
-## Event data
+The full destination URL is sent as the action custom variable
+`YOURLS destination`, preserving the original behavior. Matomo needs the
+**CustomVariables** plugin to process it. **CustomDimensions** is a separate
+plugin and does not automatically process `cvar`.
 
-Each tracked redirect sends:
-
-| Matomo field | Value |
-|---|---|
-| Event category | `YOURLS` |
-| Event action | `redirect` |
-| Event name | Short-link keyword |
-| Action URL | Short URL visited |
-| Action custom variable | Original destination URL, named `YOURLS destination` |
-| Referrer | Request referrer, if present |
-| User-Agent | Visitor's User-Agent, if present |
-| Client IP | Masked by default |
-
-To verify a click immediately, select the configured site in Matomo and inspect
-**Visitors → Visits Log / Live**. Expand a visit and look for the `YOURLS`
-event. Standard reports may update later through Matomo archiving. In a local
-YOURLS environment, the action URL will use the local host (for example,
-`localhost:8080`); a production environment uses its configured public YOURLS
-URL.
-
-## Delivery and privacy
-
-Tracking runs synchronously before YOURLS sends the redirect response. The
-request has a 500 ms connection timeout and a 1 second total timeout. A slow or
-unavailable Matomo service can add up to that bounded wait, but tracking errors
-do not prevent the redirect. Delivery is best effort and is not guaranteed.
-
-The full destination URL is included in Matomo as the action custom variable
-`YOURLS destination`, as in v1.0.0. It may contain sensitive paths or signed
-parameters; consider this when choosing links to track. This requires Matomo's
-CustomVariables plugin, and values may be truncated to its 200-character limit.
-Sending the field does not guarantee it is stored or displayed in reports.
-
-Optional missing-keyword tracking is limited to 30 delivery attempts per minute
-across the installation. It is a capped selection, not a complete count of
-missing links. Automated requests with valid-looking keywords can consume the
-quota even if Matomo later excludes them. The plugin does not currently filter
-known bot User-Agents or keep a count of skipped events. Diagnostics show when
-the latest recorded quota window reached its limit, using the existing counter
-without additional writes for excess requests. This indicates saturation, not
-how many events were skipped; lock contention and storage errors are not counted.
-
-## Code layout
-
-- `plugin.php`: plugin entry point and YOURLS hook registration.
-- `includes/admin.php`: settings page, validation, and save flow.
-- `includes/settings.php`: defaults and YOURLS option persistence.
-- `includes/tracker.php`: redirect event construction and IP anonymization.
-- `includes/matomo-api.php`: Matomo Reporting API and Tracking API requests.
+With CustomVariables available, inspect the action URL tooltip in the Visits
+Log or the Custom Variables reports. The 200-character value limit can truncate
+long destinations. Seeing the event alone does not confirm that its destination
+metadata was stored. CustomDimensions integration is not included.
 
 ## Delivery diagnostics
 
-The settings page shows the last recorded successful response and failure from
-redirect tracking, with timestamps displayed using the YOURLS timezone and
-date format, HTTP status, cURL error number, and request duration. Connection tests do not update these diagnostics. HTTP 2xx
-confirms an endpoint response, not that an event appears in Matomo reports.
+The panel shows a recorded success and failure, with HTTP status, cURL error
+number, duration, and timestamp. Both `redirect` and `keyword_not_found`
+attempts share these samples; the cards do not identify the event type.
 
-Two bounded YOURLS options are stored, one per outcome. Each is updated
-at most once per minute for sequential requests; concurrent requests may write
-together. These are samples, not exact last-attempt times or availability
-statistics. Intermediate errors may be omitted. No token, keyword, destination,
-referrer, User-Agent, IP, or response body is stored. Existing samples remain
-visible when tracking is disabled or connection settings change.
+A successful HTTP response means the endpoint answered. It does not prove the
+event was accepted into Matomo reports. Connection tests, disabled tracking,
+and filtered or quota-limited requests do not update delivery samples.
 
-Persistence happens during the redirect and adds database work on sampled
-requests, with no additional network requests. Diagnostic storage failures do
-not change the tracking result.
+### History and quota indicator
 
-### Bounded sample history
+The history holds up to ten success and ten failure samples, newest first.
+For sequential requests, each outcome is saved at most once every 60 seconds;
+concurrent requests can overwrite samples. The cards and history are samples,
+not a complete log, exact last-attempt times, or availability statistics.
 
-The diagnostic cards are followed by a history of up to ten successes and ten
-failures, sorted newest first. History is saved inside the existing outcome
-options in the same sampled write, with no additional write per redirect.
-Concurrent requests can overwrite samples; this is not an audit log. Existing
-card-only data remains compatible; history begins with the next sampled write.
-The nonce-protected clear action removes history while retaining cards and
-sampling timestamps. Samples may reappear as new clicks are tracked.
+**Clear sample history** removes the history while retaining the cards and
+sampling timestamps. Existing samples also remain after configuration changes
+or disabling tracking, so a card may describe an earlier configuration.
+
+A quota notice means the **latest recorded window** reached 30 missing-keyword
+reservations. It may refer to an earlier minute and is replaced when a later
+reservation updates that window. It does not tell you how many requests were
+skipped. Excess requests do not add counter writes.
+
+### Dates and timezones
+
+Diagnostic dates follow YOURLS' timezone and date-format helpers. If Timezones
+is active, its configuration applies. Otherwise YOURLS uses
+`YOURLS_HOURS_OFFSET` from `user/config.php`, or UTC when it is not defined;
+the default display format is `Y-m-d H:i:s` unless another filter changes it.
+Changing the display timezone does not rewrite history, reorder events, or
+change the delivery quota.
+
+## Delivery and privacy
+
+Tracking runs synchronously before the redirect response, with a 500 ms
+connection timeout and a 1 second total timeout. A slow Matomo service can
+therefore delay the response. There are no retries or persistent delivery
+queues, and delivery is not guaranteed. Tracking and diagnostic-storage
+failures do not prevent the redirect.
+
+The destination and referrer may contain sensitive paths, query parameters, or
+signed URLs. IP anonymization does not remove those values. Consider what your
+links contain before enabling tracking.
+
+Local delivery diagnostics store only timestamps, controlled outcome reasons,
+HTTP status, cURL error numbers, and durations. They do not store tokens,
+keywords, destinations, referrers, User-Agents, client IPs, or response bodies.
+This describes local diagnostics; Matomo receives the event data listed above.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| Connection test fails | HTTPS base URL, Site ID, token permissions, cURL availability, and connectivity from the YOURLS server. |
+| Connection succeeds but no events appear | Save the settings, enable tracking, and check the Matomo site/date and delivery diagnostics. The connection test sends no event. |
+| Missing keyword produces no event | Both switches, GET method, keyword format, available quota, and whether the request reaches YOURLS. |
+| Destination is missing | CustomVariables must be active; CustomDimensions alone does not process this field. |
+| Diagnostic date differs from your expectation | YOURLS timezone configuration or the Timezones plugin settings. |
 
 ## Translations
 

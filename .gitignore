@@ -2,3 +2,6 @@
 .DS_Store
 *.log
 /vendor/
+
+# Local planning notes
+/docs/CONTRACT.md
