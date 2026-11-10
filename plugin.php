@@ -3,7 +3,7 @@
 Plugin Name: KH Matomo Tracker
 Plugin URI: https://github.com/KrakenHubMx/kh-matomo
 Description: Server-side click tracking integration between YOURLS and Matomo.
-Version: 1.0.0
+Version: 1.1.0
 Author: KRAKENHUB
 Author URI: https://www.dusk.mx/
 */
@@ -13,7 +13,7 @@ if ( !defined( 'YOURLS_ABSPATH' ) ) {
 }
 
 if ( !defined( 'KH_MATOMO_VERSION' ) ) {
-    define( 'KH_MATOMO_VERSION', '1.0.0' );
+    define( 'KH_MATOMO_VERSION', '1.1.0' );
 }
 
 if ( !defined( 'KH_MATOMO_DIR' ) ) {
